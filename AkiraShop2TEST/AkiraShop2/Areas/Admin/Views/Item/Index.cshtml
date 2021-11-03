@@ -1,0 +1,99 @@
+﻿@model IEnumerable<AkiraShop2.Entities.Item>
+
+@{
+    ViewData["Title"] = "Товары. Категория - "+ ViewBag.CategoryTitle;
+}
+
+<h1>Товары. Категория - @ViewBag.CategoryTitle</h1>
+
+<p>
+    <a asp-action="Create" asp-route-categoryId ="@ViewBag.CategoryId"> Добавить новый товар</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CharactObjectEXACT)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <img src="~/uploads/Item/@item.Image" width="150" height="150" alt="Image not found ;(" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+
+
+            <td>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CharactObjectEXACT[0].charactItemName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CharactObjectEXACT[0].charactItemValue)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var _item in item.CharactObjectEXACT)
+                        {
+                            <tr>
+                                <td>
+                                    @_item.charactItemName
+                                </td>
+                                <td>
+                                    @_item.charactItemValue
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                <!--<a asp-action="Details" asp-route-id="@item.Id">Details</a> |-->
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<p>
+
+    <a asp-controller="Category" asp-action="Index">Вернуться к категориям</a>
+</p>

@@ -1,0 +1,88 @@
+﻿
+@model AkiraShop2.Entities.Category
+
+@{
+    ViewData["Title"] = "Удаление категории";
+}
+
+<h1>Удаление категории</h1>
+
+<h3>Вы уверенны что хотите удлить это?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Descriprions)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Descriprions)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class = "col-sm-10">
+            <img src="~/uploads/Category/@Model.Image" width="150" height="150" alt="Image not found ;(" />
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CharactObject)
+        </dt>
+        <dd class = "col-sm-10">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CharactObject[0].charactName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CharactObject[0].charactValues_Bool.isNumeric)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CharactObject[0].charactValues_Bool.charactValues)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < Model.CharactObject.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.CharactObject[i].charactName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.CharactObject[i].charactValues_Bool.isNumeric)
+                            </td>
+                            <td>
+
+                                @for (int j = 0; j < Model.CharactObject[i].charactValues_Bool.charactValues.Count; j++)
+                                {
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.CharactObject[i].charactValues_Bool.charactValues[j])
+                                            </td>
+                                        </tr>
+                                    </table>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index">Вернуться к категориям</a>
+    </form>
+</div>

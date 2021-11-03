@@ -1,5 +1,0 @@
-{
-  "ConnectionStrings": {
-    "MyWebApiConnection": "User ID = AkiraShop_ADMIN;Password = AkiraShop1234;Server=localhost;Port=5432;Database=AkiraShopDB.Dev;Integrated Security = true;Pooling=true;"
-  }
-}

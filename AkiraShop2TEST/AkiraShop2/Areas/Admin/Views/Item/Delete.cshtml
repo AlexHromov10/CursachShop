@@ -1,0 +1,84 @@
+﻿@model AkiraShop2.Entities.Item
+
+@{
+    ViewData["Title"] = "Удаление товара";
+}
+
+<h1>Удаление товара</h1>
+
+<h3>Вы уверены что хотите удалить это?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="~/uploads/Item/@Model.Image" width="150" height="150" alt="Image not found ;(" />
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt class="col-sm-2">
+            Характеристики
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CharactObjectEXACT[0].charactItemName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CharactObjectEXACT[0].charactItemValue)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CharactObjectEXACT)
+                    {
+                        <tr>
+                            <td>
+                                @item.charactItemName
+                            </td>
+                            <td>
+                                @item.charactItemValue
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </dd>
+
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-route-categoryId="@ViewBag.CategoryId">Вернуться к товарам</a>
+    </form>
+</div>

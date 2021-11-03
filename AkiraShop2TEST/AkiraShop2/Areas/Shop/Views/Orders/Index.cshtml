@@ -1,0 +1,92 @@
+﻿@model IEnumerable<AkiraShop2.Entities.Order>
+
+@{
+    ViewData["Title"] = "Заказы";
+}
+
+<h1>Заказы</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ItemsForOrder)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.ItemsForOrder[0].Title)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.ItemsForOrder[0].Description)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.ItemsForOrder[0].Image)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.ItemsForOrder[0].Price)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var _item in item.ItemsForOrder)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => _item.Title)
+                                    </td>
+                                    <td>
+
+                                        @Html.DisplayFor(modelItem => _item.Description)
+                                    </td>
+                                    <td>
+                                        <img src="~/uploads/Item/@_item.Image" width="150" height="150" alt="Image not found ;(" />
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => _item.Price)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+
+                <td>
+                    <!-- <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |-->
+                    <!--<a asp-action="Details" asp-route-id="@item.Id">Details</a> |-->
+                    @if (item.Status == "formed")
+                    {
+                        <a class="btn del_button" asp-action="DeleteOrder" asp-route-orderId="@item.Id">Удалить заказ</a>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

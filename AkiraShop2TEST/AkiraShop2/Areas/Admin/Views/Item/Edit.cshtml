@@ -1,0 +1,84 @@
+﻿@model AkiraShop2.Entities.Item
+
+@{
+    ViewData["Title"] = "Изменить товар. Категория - " + ViewBag.CategoryTitle;
+}
+<h5>Изменить товар. Категория - @ViewBag.CategoryTitle</h5>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CategoryId" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ManufacturerId" class="control-label"></label>
+                <select asp-for="ManufacturerId" class="form-control" asp-items="@Model.Manufacturers">
+                </select>
+            </div>
+
+            <div class="form-group">
+                @for (var i = 0; i < Model.Characteristics.Count; i++)
+                {
+                    <input type="hidden" asp-for="CharactObjectEXACT[i].charactItemName" value="@Model.CharactObjectEXACT[i].charactItemName" class="form-control" />
+
+                    <label asp-for="CharactObjectEXACT[i].charactItemName" class="control-label">@Model.CharactObjectEXACT[i].charactItemName</label>
+                    <select multiple asp-for="CharactObjectEXACT[i].charactItemValue" class="form-control" asp-items="@Model.Characteristics[i]">
+                    </select>
+                }
+            </div>
+
+
+
+            <div>
+                <img src="~/uploads/Item/@Model.Image" width="250" height="250" alt="Image not found ;(" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ImageFile_EDIT"></label>
+                <input type="file" asp-for="ImageFile_EDIT" class="form-control" />
+                <span asp-validation-for="ImageFile_EDIT" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group" hidden="hidden">
+                <label asp-for="Image"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-categoryId ="@ViewBag.CategoryId">Вернуться к товарам</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

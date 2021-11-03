@@ -1,0 +1,123 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using AkiraShop2.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model AkiraShop2.Models.ItemsViewModel
+@{
+    ViewData["Title"] = "Товары категории " + ViewBag.CategoryTitle;
+}
+
+<h1>@ViewBag.CategoryTitle</h1>
+<div class="row">
+
+    <div class="col-3 characteristic_list">
+
+
+        <form asp-action="Filter">
+            <input type="hidden" asp-for="category" value="@Model.category" />
+            <input type="hidden" asp-for="category.Id" value="@ViewBag.CategoryId" />
+            <input type="hidden" asp-for="category.Title" value="@ViewBag.CategoryTitle" />
+            @for (int i = 0; i < Model.category.CharactObject.Count; i++)
+            {
+                <div class="characteristic_obj">
+                    <h5>@Model.category.CharactObject[i].charactName</h5>
+                    <input type="hidden" asp-for="category.CharactObject[i].charactName" value="@Model.category.CharactObject[i].charactName" />
+                    @if (Model.category.CharactObject[i].charactValues_Bool.isNumeric == true)
+                    {
+
+                        <input type="hidden" asp-for="category.CharactObject[i].charactValues_Bool.isNumeric" value="true" />
+
+                        <div class="form-group">
+                            <label asp-for="@Model.category.CharactObject[i].charactValues_Bool.filter.from" class="control-label"></label>
+                            <input asp-for="@Model.category.CharactObject[i].charactValues_Bool.filter.from" placeholder="@Model.category.CharactObject[i].charactValues_Bool.charactValues.First()" class="form-control" />
+                            <span asp-validation-for="@Model.category.CharactObject[i].charactValues_Bool.filter.from" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.category.CharactObject[i].charactValues_Bool.filter.to" class="control-label"></label>
+                            <input asp-for="@Model.category.CharactObject[i].charactValues_Bool.filter.to" placeholder="@Model.category.CharactObject[i].charactValues_Bool.charactValues.Last()" class="form-control" />
+                            <span asp-validation-for="@Model.category.CharactObject[i].charactValues_Bool.filter.to" class="text-danger"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        for (int j = 0; j < Model.category.CharactObject[i].charactValues_Bool.charactValues.Count; j++)
+                        {
+                            <div class="form-group">
+                                <label class="control-label" asp-for="@Model.category.CharactObject[i].charactValues_Bool.charactValues[j]">@Model.category.CharactObject[i].charactValues_Bool.charactValues[j]</label>
+                                <input asp-for="@Model.category.CharactObject[i].charactValues_Bool.filter.exactValue[j]" class="DIV_checkbox" />
+                            </div>
+
+                        }
+                    }
+                </div>
+
+            }
+            <div class="form-group">
+                <input type="submit" value="Применить фильтр" class="btn btn-primary" />
+            </div>
+        </form>
+            
+    </div>
+    
+
+
+    <div class="col-8 item_list">
+        @foreach (var item in Model.itemList)
+        {
+            <div class="item_DIV">
+                <div class="item_image">
+                    <img src="~/uploads/Item/@item.Image" width="150" height="150" alt="Image not found ;(" />
+                </div>
+                <div class="item_title">
+                    <h3>@item.Title</h3>
+                    <p>Количество: @item.Amount</p>
+                </div>
+                <div class="item_desc">
+                    <p>@item.Description</p>
+                </div>
+                <div class="item_price">
+                    <h3>@item.Price ₽</h3>
+                </div>
+                <div class="item_buy">
+                    @if (item.Amount == 0)
+                    {
+                        <a class="btn buy_button disabled">Купить</a>
+                    }
+                    else
+                    {
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <a class="btn buy_button" asp-action="AddToCart" asp-route-categoryId="@item.CategoryId" asp-route-id="@item.Id">Купить</a>
+                        }
+                        else
+                        {
+                            <a class="btn buy_button" asp-area="Identity" asp-page="/Account/Login" data-toggle="modal" data-target="#UserLoginModal">Купить</a>
+                        }
+                    }
+
+
+                </div>
+            </div>
+        }
+
+            
+    </div>
+    
+</div>
+
+<div class="modal fade" id="UserLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserLoginPartial" model="new LoginModel()">
+</div>
+
+<div class="modal fade" id="UserRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserRegistrationPartial" model="new RegistrationModel()">
+</div>
+
+@section Scripts{
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_AuthScriptsPartial");
+    }
+}

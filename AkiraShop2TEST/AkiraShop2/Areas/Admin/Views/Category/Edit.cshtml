@@ -1,0 +1,111 @@
+﻿@model AkiraShop2.Entities.Category
+
+@{
+    ViewData["Title"] = "Изменить категорию";
+}
+
+<h5>Изменить категорию</h5>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+   
+
+
+
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descriprions" class="control-label"></label>
+                <textarea asp-for="Descriprions" class="form-control"></textarea>
+                <span asp-validation-for="Descriprions" class="text-danger"></span>
+            </div>
+
+            <!--
+            <div class="row" style="width:100%;">
+                <div class="col">
+                    <input formnovalidate type="submit" value="Добавить хараткеристику" formaction="CharactEdit" formmethod="post" class="btn btn-outline-secondary" />
+                </div>
+                <hr class="solid">
+                <div class="col">
+                    <input formnovalidate type="submit" name="buttonid" value="Удалить последнюю добавленную характеристику" formaction="DelCharact" formmethod="post" class="btn btn-outline-secondary" />
+                </div>
+            </div>
+            -->
+
+            @for (int i = 0; i < Model.CharactObject.Count; i++)
+            {
+                <div class="row" style="width:500px;">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="CharactObject[i].charactName" class="control-label"></label>
+                            <input asp-for="CharactObject[i].charactName" class="form-control" />
+                            <span asp-validation-for="CharactObject[i].charactName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CharactObject[i].charactValues_Bool.isNumeric" class="control-label"></label>
+                            <input type="checkbox" asp-for="CharactObject[i].charactValues_Bool.isNumeric" class="form-control" />
+                            <span asp-validation-for="CharactObject[i].charactValues_Bool.isNumeric" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            @for (int j = 0; j < Model.CharactObject[i].charactValues_Bool.charactValues.Count; j++)
+                            {
+                                <div class="form-group">
+                                    <label asp-for="CharactObject[i].charactValues_Bool.charactValues" class="control-label"></label>
+                                    <input asp-for="CharactObject[i].charactValues_Bool.charactValues[j]" class="form-control" />
+                                    <span asp-validation-for="CharactObject[i].charactValues_Bool.charactValues[j]" class="text-danger"></span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <h5>Загружать картинку после заполения характеристик!!!!</h5>
+
+            <div>
+                <img src="~/uploads/Category/@Model.Image" width="250" height="250" alt="Image not found ;(" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ImageFile_EDIT"></label>
+                <input type="file" asp-for="ImageFile_EDIT" class="form-control" />
+                <span asp-validation-for="ImageFile_EDIT" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group" hidden="hidden">
+                <label asp-for="Image"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться к категориям</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    function AbobaScritp(e) {
+        e.
+    }
+</script>
