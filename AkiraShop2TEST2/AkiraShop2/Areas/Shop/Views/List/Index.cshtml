@@ -1,0 +1,179 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using AkiraShop2.Data
+@model ItemsViewModel
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Товары категории " + ViewBag.CategoryTitle;
+}
+
+<h1>@ViewBag.CategoryTitle</h1>
+<form asp-action="Filter">
+    <!--<div class="container">-->
+
+    <div class="row">
+
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 characteristic_list ">
+
+            <input type="hidden" name="categoryId" value="@ViewBag.CategoryId" />
+
+            <div class="characteristic_obj">
+                <h5>Цена</h5>
+                <hr class="solid">
+                <div>
+                    <label asp-for="@Model.filter.Price_from" class="label_input"></label>
+                    <input asp-for="@Model.filter.Price_from" placeholder="@Model.filter.maxMinPrice.First()" class="form-control for_input" />
+                    <span asp-validation-for="@Model.filter.Price_from" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="@Model.filter.Price_to" class="label_input"></label>
+                    <input asp-for="@Model.filter.Price_to" placeholder="@Model.filter.maxMinPrice.Last()" class="form-control for_input" />
+                    <span asp-validation-for="@Model.filter.Price_to" class="text-danger"></span>
+                </div>
+                <span class="text-danger">
+                    @ViewData["priceERROR"]
+                </span>
+            </div>
+
+            <div class="characteristic_obj">
+                <h5>Производитель</h5>
+                <hr class="solid">
+                @for (int i = 0; i < Model.filter.Manufacturers.Count; i++)
+                {
+                    <div>
+                        <label class="checkbox">
+                            <input type="checkbox" asp-for="@Model.filter.ManufacturerId[i]" />
+                            <span>@Model.filter.Manufacturers[i].Title</span>
+                        </label>
+                    </div>
+                }
+
+            </div>
+
+            @for (int i = 0; i < Model.filter.CharactObject.Count; i++)
+            {
+                <div class="characteristic_obj">
+                    <h5>@Model.filter.CharactObject[i].charactName</h5>
+                    <hr class="solid">
+                    @if (Model.filter.CharactObject[i].charactValues_Bool.isNumeric == true)
+                    {
+
+                        <div class="first_characteristic">
+                            <label asp-for="@Model.filter.Filters[i].from" class="label_input"></label>
+                            <input asp-for="@Model.filter.Filters[i].from" placeholder="@Model.filter.CharactObject[i].charactValues_Bool.charactValues.First()" class="form-control for_input" />
+                            <span asp-validation-for="@Model.filter.Filters[i].from" class="text-danger"></span>
+                        </div>
+                        <div class="">
+                            <label asp-for="@Model.filter.Filters[i].to" class="label_input"></label>
+                            <input asp-for="@Model.filter.Filters[i].to" placeholder="@Model.filter.CharactObject[i].charactValues_Bool.charactValues.Last()" class="form-control for_input" />
+                            <span asp-validation-for="@Model.filter.Filters[i].to" class="text-danger"></span>
+                        </div>
+                        <span id="spanERROR @i" name="spanERROR @i" class="text-danger">
+                            @ViewData[Model.filter.CharactObject[i].charactName]
+                        </span>
+                    }
+                    else
+                    {
+                        for (int j = 0; j < Model.filter.CharactObject[i].charactValues_Bool.charactValues.Count; j++)
+                        {
+                            <div>
+                                <label class="checkbox">
+                                    <input type="checkbox" asp-for="@Model.filter.Filters[i].exactValue[j]"/>
+                                    <span>@Model.filter.CharactObject[i].charactValues_Bool.charactValues[j]</span>
+                                </label>
+                            </div>
+
+                        }
+                    }
+                </div>
+
+            }
+            <div class="characteristic_obj">
+                <input type="submit" value="Применить фильтр" class="btn buy_button" />
+            </div>
+        </div>
+
+
+
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 item_list">
+            @if (Model.itemList.Count == 0)
+            {
+                <div class="item_DIV_error">
+                    <h3>Извините, нет подходящего товара по заданным критериям :(</h3>
+                </div>
+            }
+            else
+            {
+                @for (int i = 0; i < Model.itemList.Count; i++)
+                {
+                    <div onclick="location.href = '/Shop/Product/@Model.itemList[i].Id';" style="cursor: pointer;">
+                        <div class="item_DIV" id="DivId_item(@i)" >
+                            <div class="item_image">
+                                <img src="~/uploads/Item/@Model.itemList[i].Image" width="150" height="150" alt="Image not found ;(" />
+                            </div>
+                            <div class="item_title_desc">
+                                <h2>@Model.itemList[i].Title</h2>
+                                <p>@Model.itemList[i].Description</p>
+                            </div>
+                            <div class="item_price">
+                                <h3>@Model.itemList[i].Price ₽</h3>
+
+                                @if (Model.itemList[i].Amount == 0)
+                                {
+                                    <a class="btn buy_button disabled">Купить</a>
+                                }
+                                else
+                                {
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+
+                                        <button action="AddToCard" class="btn buy_button" type="submit" name="ID" value="@Model.itemList[i].Id">В корзину</button>
+
+
+                                    }
+                                    else
+                                    {
+                                        <a class="btn buy_button" asp-area="Identity" asp-page="/Account/Login" data-toggle="modal" data-target="#UserLoginModal">В корзину</a>
+                                    }
+                                }
+
+                                <p>Количество: @Model.itemList[i].Amount</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+
+            </div>
+    <!--</div>-->
+</form>
+<div class="modal fade" id="UserLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserLoginPartial" model="new LoginModel()">
+</div>
+
+<div class="modal fade" id="UserRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserRegistrationPartial" model="new RegistrationModel()">
+</div>
+
+@section Scripts{
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_AuthScriptsPartial");
+        //await Html.RenderPartialAsync("_FilterPartial");
+        //await Html.RenderPartialAsync("_ItemsPartial");
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script>
+            window.onload = function () {
+                document.getElementById('@ViewBag.JumpToDivId').scrollIntoView();
+            };
+        </script>
+
+
+    }
+}

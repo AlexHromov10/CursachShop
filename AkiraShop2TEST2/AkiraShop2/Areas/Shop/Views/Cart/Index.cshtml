@@ -1,0 +1,61 @@
+﻿
+@model AkiraShop2.Entities.Order
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+
+
+<div class="item_list">
+    <h1>Корзина</h1>
+
+
+
+        <div class="col-12 item_list">
+            @if (Model.ItemsForOrder.Count == 0)
+            {
+                <div class="item_DIV_error">
+                    <h3>Ваша корзина пуста!!!</h3>
+                </div>
+            }
+            @foreach (var item in Model.ItemsForOrder)
+            {
+                <div onclick="location.href = '/Shop/Product/@item.Id';" style="cursor: pointer;">
+                    <div class="item_DIV">
+
+                        <div class="item_image">
+                            <img src="~/uploads/Item/@item.Image" width="150" height="150" alt="Image not found ;(" />
+                        </div>
+                        <div class="item_title_desc">
+                            <h2>@item.Title</h2>
+                            <p>@item.Description</p>
+                        </div>
+                        <div class="item_price">
+                            <h3>@item.Price ₽</h3>
+                            <a class="btn del_button" asp-action="DeleteItem" asp-route-itemId="@item.Id">Удалить</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-12 item_DIV_error">
+            @if (Model.OrderItems != null)
+            {
+                <a class="btn buy_button" asp-action="CreateOrder" asp-route-orderId="@Model.Id">Оформить заказ</a>
+            }
+
+        </div>
+
+    
+
+</div>
+
+
+
+@section Scripts{
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_AuthScriptsPartial");
+    }
+}

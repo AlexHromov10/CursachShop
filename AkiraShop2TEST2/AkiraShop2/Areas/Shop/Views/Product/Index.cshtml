@@ -1,0 +1,112 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using AkiraShop2.Data
+@using AkiraShop2.Entities
+@model Item
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="col">
+    <h2>Продукт - @Model.Title</h2>
+    <div class="product">
+
+        <div class="product_image">
+
+            <img src="~/uploads/Item/@Model.Image" alt="Image not found ;(" />
+        </div>
+
+        <div class="product_price_buy">
+            <h3>@Model.Price ₽</h3>
+            <p>Количество: @Model.Amount</p>
+
+
+            @if (Model.Amount == 0)
+            {
+                <a class="btn buy_button product_buy_button disabled">Купить</a>
+                <div class="row helpful_btns">
+                    <button class="btn secondary_button" onclick="scrol(111)">Описание</button>
+                    <button class="btn secondary_button" onclick="scrol(222)">Хараткристики</button>
+                </div>
+            }
+            else
+            {
+                @if (SignInManager.IsSignedIn(User))
+                {
+
+                    <a class="btn buy_button product_buy_button " asp-area="Shop" asp-controller="Product" asp-action="AddToCard" asp-route-ID="@Model.Id">В корзину</a>
+                    <div class="row helpful_btns">
+                        <button class="btn secondary_button" onclick="scrol(111)">Описание</button>
+                        <button class="btn secondary_button" onclick="scrol(222)">Хараткристики</button>
+                    </div>
+
+                }
+                else
+                {
+                    <a class="btn buy_button product_buy_button " asp-area="Identity" asp-page="/Account/Login" data-toggle="modal" data-target="#UserLoginModal">В корзину</a>
+                    <div class="row helpful_btns">
+                        <button class="btn secondary_button" onclick="scrol(111)">Описание</button>
+                        <button class="btn secondary_button" onclick="scrol(222)">Хараткристики</button>
+                    </div>
+                }
+            }
+
+
+
+        </div>
+    </div>
+
+
+    <div class="description" id="111" name="111">
+        <h4>Описание: </h4>
+        <p>@Model.Description</p>
+    </div>
+
+    <div class="characteristics" id="222" name="222">
+        <h4>Характеристики: </h4>
+        <table class="table">
+
+            @foreach (var _item in Model.CharactObjectEXACT)
+            {
+                <tr>
+                    <td>
+                        @_item.charactItemName
+                    </td>
+                    <td>
+                        @_item.charactItemValue
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="UserLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserLoginPartial" model="new LoginModel()">
+</div>
+
+<div class="modal fade" id="UserRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserRegistrationPartial" model="new RegistrationModel()">
+</div>
+
+@section Scripts{
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_AuthScriptsPartial");
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script>
+            function scrol(div) {
+                var scrollDiv = document.getElementById(div).offsetTop;
+                window.scrollTo({ top: scrollDiv, behavior: 'smooth' });
+            }
+            
+        </script>
+
+    }
+}

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<AkiraShop2.Entities.Category>
+@{
+    ViewData["Title"] = "Выберите категорию";
+}
+
+<div class="text-center">
+    <h3>Выберите категорию</h3>
+    @foreach (var category in Model)
+    {
+        <a asp-area="Shop" asp-controller="List" asp-action="Index" asp-route-categoryId="@category.Id">@category.Title</a>
+    }
+</div>
+
+<div class="modal fade" id="UserLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserLoginPartial" model="new LoginModel()">
+</div>
+
+<div class="modal fade" id="UserRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <partial name="_UserRegistrationPartial" model="new RegistrationModel()">
+</div>
+
+@section Scripts{
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_AuthScriptsPartial");
+    }
+}
