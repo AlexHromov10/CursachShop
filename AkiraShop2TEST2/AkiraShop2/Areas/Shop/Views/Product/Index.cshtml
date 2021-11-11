@@ -24,13 +24,22 @@
             <p>Количество: @Model.Amount</p>
 
 
-            @if (Model.Amount == 0)
+            @if (Model.Amount == 0 || ViewBag.NotAvalible == Model.Id)
             {
-                <a class="btn buy_button product_buy_button disabled">Купить</a>
+                <a class="btn buy_button product_buy_button disabled">В корзину</a>
                 <div class="row helpful_btns">
                     <button class="btn secondary_button" onclick="scrol(111)">Описание</button>
                     <button class="btn secondary_button" onclick="scrol(222)">Хараткристики</button>
                 </div>
+                if (ViewBag.NotAvalibleWish == Model.Id)
+                {
+                    <a class="btn wish_button disabled">В избранном</a>
+                }
+                else
+                {
+                    <a class="btn wish_button " asp-area="Shop" asp-controller="Product" asp-action="AddToWish" asp-route-ID="@Model.Id">В избранное</a>
+                }
+
             }
             else
             {
@@ -42,6 +51,14 @@
                         <button class="btn secondary_button" onclick="scrol(111)">Описание</button>
                         <button class="btn secondary_button" onclick="scrol(222)">Хараткристики</button>
                     </div>
+                    if (ViewBag.NotAvalibleWish == Model.Id)
+                    {
+                        <a class="btn wish_button  disabled">В избранном</a>
+                    }
+                    else
+                    {
+                        <a class="btn wish_button " asp-area="Shop" asp-controller="Product" asp-action="AddToWish" asp-route-ID="@Model.Id">В избранное</a>
+                    }
 
                 }
                 else

@@ -28,8 +28,9 @@ namespace AkiraShop2.Areas.Shop.Controllers
         //GET
         public async Task<IActionResult> Index()
         {
+
             List<Order> orders = await(from order in _context.Order
-                                       where order.UserOrderId == User.FindFirstValue(ClaimTypes.NameIdentifier) && order.Status != "CART"
+                                       where order.UserOrderId == User.FindFirstValue(ClaimTypes.NameIdentifier) && order.Status != "CART" && order.Status != "WISH_LIST"
                                        select new Order
                                        {
                                            Id = order.Id,
@@ -42,10 +43,10 @@ namespace AkiraShop2.Areas.Shop.Controllers
             {
                 foreach (var orderItem in order.OrderItems)
                 {
-                    Item item = _context.Item.First(i => i.Id == orderItem.OrderItem_ItemId);
+                    Item item = await _context.Item.FirstOrDefaultAsync(i => i.Id == orderItem.OrderItem_ItemId);
                     if (item != null)
                     {
-                        order.ItemsForOrder.Add(item);
+                       order.ItemsForOrder.Add(item);
                     }
                 }
             }
@@ -53,40 +54,24 @@ namespace AkiraShop2.Areas.Shop.Controllers
             return View(orders);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteOrder(int? orderId)
         {
             if (orderId == null)
             {
                 return NotFound();
             }
+            Order order_del = await _context.Order.Include(f => f.OrderItems).FirstOrDefaultAsync(i => i.Id == orderId);
 
-            var orders = (from ordr in _context.Order
-                          where ordr.Id == orderId
-                          select new Order
-                          {
-                              Id = ordr.Id,
-                              UserOrderId = ordr.UserOrderId,
-                              Status = ordr.Status,
-                              OrderItems = ordr.OrderItems
-                          });
-
-            foreach (var ordr in orders)
-            {
-                foreach (var orderItem in ordr.OrderItems)
-                {
-                    Item item = _context.Item.First(i => i.Id == orderItem.OrderItem_ItemId);
-                    if (item != null)
-                    {
-                        item.Amount++;
-                    }
-                }
-                _context.Remove(ordr);
-            }
-            await _context.SaveChangesAsync();
+            await order_del.order_Delete(_context);
 
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> BuyOrder(int? orderId)
+        {
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

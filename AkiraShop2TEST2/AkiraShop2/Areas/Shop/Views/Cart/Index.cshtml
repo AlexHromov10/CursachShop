@@ -1,55 +1,101 @@
 ﻿
-@model AkiraShop2.Entities.Order
+@model IEnumerable<AkiraShop2.Entities.Order>
 @{
     ViewData["Title"] = "Корзина";
 }
 
-
-
-<div class="item_list">
-    <h1>Корзина</h1>
+<div class="row">
 
 
 
-        <div class="col-12 item_list">
-            @if (Model.ItemsForOrder.Count == 0)
+    <div class="col-8 item_list">
+
+        <h1>Корзина</h1>
+        @if (Model.First().items_with_amounts.Count == 0)
+        {
+            <div class="item_DIV_error">
+
+                <h3>Корзина пуста!</h3>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model.First().items_with_amounts)
             {
-                <div class="item_DIV_error">
-                    <h3>Ваша корзина пуста!!!</h3>
-                </div>
-            }
-            @foreach (var item in Model.ItemsForOrder)
-            {
-                <div onclick="location.href = '/Shop/Product/@item.Id';" style="cursor: pointer;">
-                    <div class="item_DIV">
+                <div onclick="location.href = '/Shop/Product/@item.Key.Id';" style="cursor: pointer;">
+                    <div class="cart_item_DIV">
+                        <div class="cart_item_image">
+                            <img src="~/uploads/Item/@item.Key.Image" width="130" height="130" alt="Image not found ;(" />
+                        </div>
+                        <div class="cart_item_title_desc">
+                            <h2>@item.Key.Title</h2>
+                            <p>Количество в корзине: @item.Value</p>
+                        </div>
+                        <div class="cart_item_price">
+                            <h3>@item.Key.Price ₽</h3>
+                            <a class="btn del_button" asp-action="DeleteItem" asp-route-itemId="@item.Key.Id" asp-route-status="CART">Удалить</a>
 
-                        <div class="item_image">
-                            <img src="~/uploads/Item/@item.Image" width="150" height="150" alt="Image not found ;(" />
-                        </div>
-                        <div class="item_title_desc">
-                            <h2>@item.Title</h2>
-                            <p>@item.Description</p>
-                        </div>
-                        <div class="item_price">
-                            <h3>@item.Price ₽</h3>
-                            <a class="btn del_button" asp-action="DeleteItem" asp-route-itemId="@item.Id">Удалить</a>
                         </div>
                     </div>
                 </div>
             }
-        </div>
-        <div class="col-12 item_DIV_error">
-            @if (Model.OrderItems != null)
+
+            <div class="col-12 item_DIV_error">
+                <a class="btn buy_button" asp-action="CreateOrder" asp-route-orderId="@Model.First().Id">Оформить заказ</a>
+            </div>
+
+        }
+    </div>
+
+
+    <div class="col-4 item_list">
+        <h1>Избраноое</h1>
+        @if (Model.Last().ItemsForOrder.Count == 0)
+        {
+            <div class="item_DIV_error">
+
+                <h3>Список избранного пуст!</h3>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model.Last().ItemsForOrder)
             {
-                <a class="btn buy_button" asp-action="CreateOrder" asp-route-orderId="@Model.Id">Оформить заказ</a>
+                string opacit = "1";
+                string curs = "pointer";
+                if (item.Amount == 0)
+                {
+                    opacit = "0.5";
+                    curs = "auto";
+                }
+
+                <div onclick="location.href = '/Shop/Product/@item.Id';" style="cursor: @curs; opacity: @opacit">
+                    <div class="cart_item_DIV">
+
+                        <div class="cart_item_image">
+                            <img src="~/uploads/Item/@item.Image" width="130" height="130" alt="Image not found ;(" />
+                        </div>
+                        <div class="cart_item_title_desc">
+                            <h2>@item.Title</h2>
+                            <p>Количество на складе @item.Amount</p>
+                        </div>
+                        <div class="cart_item_price">
+                            <a class="btn del_button" asp-action="DeleteItem" asp-route-itemId="@item.Id" asp-route-status="WISH_LIST">-</a>
+
+                        </div>
+                    </div>
+                </div>
+                
             }
 
-        </div>
 
-    
+        }
+
+
+    </div>
 
 </div>
-
+    
 
 
 @section Scripts{

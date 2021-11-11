@@ -147,6 +147,7 @@ hr.solid {
 
 
 .item_DIV {
+    position: relative;
     display: grid;
     grid-template-columns: 1fr 1.5fr 0.7fr;
     grid-template-rows: 1fr;
@@ -159,8 +160,19 @@ hr.solid {
     margin-bottom: 25px;
     transition: box-shadow 0.5s;
 }
+.item_DIV > a{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-decoration: none; /* No underlines on the link */
+    z-index: 10; /* Places the link above everything else in the div */
+    background-color: #FFF; /* Fix to make div clickable in IE */
+    opacity: 0; /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+}
 .item_DIV:hover{
-    
     box-shadow: 10px 10px 5px 2px rgba(35, 95, 108, 0.26);
 }
 
@@ -195,7 +207,7 @@ hr.solid {
 }
 .item_price h3{
     text-align: center;
-    margin-bottom: 30%;
+    margin-bottom: 10%;
 }
 .item_price p{
     margin-top:auto;
@@ -209,6 +221,9 @@ hr.solid {
 
 
 .buy_button {
+    
+    position:relative;
+    z-index: 11; /* Places the link above everything else in the div */
     display: inline-block;
     width: 100%;
     font-family: "Arial";
@@ -250,3 +265,31 @@ a.btn.del_button {
     background-color: #c96363;
     color: black;
 }
+
+
+
+.wish_button {
+    margin-top: 10px;
+    position: relative;
+    z-index: 11;
+    width: 100%;
+    display: inline-block;
+    font-family: "Arial";
+    font-size: 16px;
+    border-radius: 8px;
+    border-color: none;
+    background-color: #97b2c2;
+    height: 40px;
+    color: #FFFFFF;
+    transition: background-color 0.3s;
+}
+
+a.btn.wish_button {
+    line-height: 30px;
+}
+
+.wish_button:hover {
+    background-color: #5c6c75;
+    color: #FFFFFF
+}
+

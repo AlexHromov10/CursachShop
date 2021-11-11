@@ -28,46 +28,61 @@ namespace AkiraShop2.Areas.Orders.Controllers
             _hostingEnvironment = ihost;
             _logger = logger;
         }
-
+        
         //GET
         public async Task<IActionResult> Index()
         {
-            List<Order> cartlist = await (from order in _context.Order
-                                          where order.UserOrderId == User.FindFirstValue(ClaimTypes.NameIdentifier) && order.Status == "CART"
-                                          select new Order
-                                          {
-                                              Id = order.Id,
-                                              UserOrderId = order.UserOrderId,
-                                              Status = order.Status,
-                                              OrderItems = order.OrderItems
-                                          }).ToListAsync();
-
-            if (cartlist.Count != 1)
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId != null)
             {
-                return NotFound();
-            }
+                Order cart = await _context.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(i => i.UserOrderId == userId && i.Status == "CART");
+                Order wait_list = await _context.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(i => i.UserOrderId == userId && i.Status == "WISH_LIST");
 
-            Order cart = cartlist.FirstOrDefault();
-
-            if (cart != null)
-            {
-                if (cart.OrderItems != null)
+                if (cart != null)
                 {
-                    foreach (var orderItem in cart.OrderItems)
-                    {
-                        Item item = _context.Item.FirstOrDefault(i => i.Id == orderItem.OrderItem_ItemId);
-                        if (item != null)
-                        {
-                            cart.ItemsForOrder.Add(item);
-                        }
-
-                    }
-                    return View(cart);
+                    await cart.InitOrder(_context);
+                    
                 }
                 else
                 {
-                    return View(cart);
+                    return NotFound();
                 }
+                if (wait_list != null)
+                {
+                    await wait_list.InitOrder(_context);
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+                List<Item> notAvalibleItems = cart.order_checkForAvalibleAmount(cart.items_with_amounts);
+
+                if (notAvalibleItems.Count != 0)
+                {
+                    foreach (var NOitem in notAvalibleItems)
+                    {
+                        if (!wait_list.ItemsForOrder.Any(i => i == NOitem)) 
+                        {
+                            _context.OrderItem.Add(new OrderItem { OrderItem_ItemId = NOitem.Id, OrderItem_OrderId = wait_list.Id });
+                            
+                            wait_list.ItemsForOrder.Add(NOitem);
+
+                            
+                        }
+                        cart.ItemsForOrder.RemoveAll(i => i.Id == NOitem.Id);
+                        cart.items_with_amounts = cart.itemToBuy_amount(cart.ItemsForOrder);
+
+                        OrderItem toRemove = await _context.OrderItem.FirstOrDefaultAsync(i => i.OrderItem_ItemId == NOitem.Id && i.OrderItem_OrderId == cart.Id);
+                        _context.OrderItem.Remove(toRemove);
+                    }
+                    await _context.SaveChangesAsync();
+
+                }
+
+                List<Order> result = new List<Order> { cart, wait_list };
+                return View(result);
+
             }
             else
             {
@@ -77,25 +92,17 @@ namespace AkiraShop2.Areas.Orders.Controllers
 
         }
 
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteItem(int? itemId)
+        public async Task<IActionResult> DeleteItem(int? itemId, string? status)
         {
             if (itemId == null)
             {
                 return NotFound();
             }
 
-            
-
             var item = await _context.Item.FindAsync(itemId);
-            item.Amount++;
-            //var user = await _context.Users.FindAsync();
 
-            Order order = await _context.Order.FirstOrDefaultAsync(i => i.UserOrderId == User.FindFirstValue(ClaimTypes.NameIdentifier) && i.Status == "CART");
+            Order order = await _context.Order.FirstOrDefaultAsync(i => i.UserOrderId == User.FindFirstValue(ClaimTypes.NameIdentifier) && i.Status == status);
 
-            //OrderItem orderItem = new OrderItem { OrderItem_ItemId = itemId.Value, OrderItem_OrderId = order.Id };
 
             OrderItem orderItem = await _context.OrderItem.FirstOrDefaultAsync(i => i.OrderItem_ItemId == itemId.Value && i.OrderItem_OrderId == order.Id);
 
@@ -107,8 +114,6 @@ namespace AkiraShop2.Areas.Orders.Controllers
 
 
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrder(int? orderId)
         {
             if (orderId == null)
@@ -116,14 +121,8 @@ namespace AkiraShop2.Areas.Orders.Controllers
                 return NotFound();
             }
 
-            Order cart = await _context.Order.FirstOrDefaultAsync(i => i.Id == orderId);
-            cart.Status = "formed";
-
-            Order new_cart = new Order { UserOrderId = cart.UserOrderId, Status = "CART" };
-
-            _context.Update(cart);
-            _context.Add(new_cart);
-            await _context.SaveChangesAsync();
+            Order cart = await _context.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(i => i.Id == orderId);
+            await cart.order_Create(_context);
 
             return RedirectToAction(nameof(Index));
         }

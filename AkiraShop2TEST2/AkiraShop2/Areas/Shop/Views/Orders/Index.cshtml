@@ -82,6 +82,7 @@
                     <!--<a asp-action="Details" asp-route-id="@item.Id">Details</a> |-->
                     @if (item.Status == "formed")
                     {
+                        <a class="btn del_button" asp-action="BuyOrder" asp-route-orderId="@item.Id">Купить заказ</a>
                         <a class="btn del_button" asp-action="DeleteOrder" asp-route-orderId="@item.Id">Удалить заказ</a>
                     }
 

@@ -94,7 +94,9 @@ namespace AkiraShop2.Areas.Admin.Controllers
                     registrationModel.RegistrationInValid = "";
 
                     Order Cart = new Order { UserOrderId = user.Id, Status = "CART" };
+                    Order wait_list = new Order { UserOrderId = user.Id, Status = "WISH_LIST" };
                     _context.Add(Cart);
+                    _context.Add(wait_list);
                     await _context.SaveChangesAsync();
 
 

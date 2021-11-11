@@ -22,9 +22,13 @@ namespace AkiraShop2.Models
 
         [NotMapped]
         public List<Item> itemList { get; set; }
-        
 
-        
+        [NotMapped]
+        public List<int> NOT_AVALIBLE_itemListIDS { get; set; }
+        [NotMapped]
+        public List<int> NOT_AVALIBLE_waitList { get; set; }
+
+
 
         [NotMapped]
         public FullFilter filter { get; set; }

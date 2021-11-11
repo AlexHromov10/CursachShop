@@ -8,7 +8,9 @@ namespace AkiraShop2.Entities
 {
     public class OrderItem
     {
-        //[Key]
+        
+
+
         public int Id { get; set; }
 
         public int OrderItem_OrderId{ get; set; }

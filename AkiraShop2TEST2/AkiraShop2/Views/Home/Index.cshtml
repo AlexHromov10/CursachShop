@@ -4,11 +4,18 @@
 }
 
 <div class="text-center">
-    <h3>Выберите категорию</h3>
-    @foreach (var category in Model)
-    {
-        <a asp-area="Shop" asp-controller="List" asp-action="Index" asp-route-categoryId="@category.Id">@category.Title</a>
-    }
+    <h1>Категории</h1>
+    <div class="row " >
+        @foreach (var category in Model)
+        {
+            <div class="col-3 category_div " >
+                <a href="/Shop/List/@category.Id"></a>
+                <img src="~/uploads/Category/@category.Image" width="200" height="200" alt="Image not found ;(" />
+                <h2>@category.Title</h2>
+            </div>
+            
+        }
+    </div>
 </div>
 
 <div class="modal fade" id="UserLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

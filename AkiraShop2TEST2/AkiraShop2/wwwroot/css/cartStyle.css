@@ -1,0 +1,97 @@
+﻿
+.disableddiv {
+    
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 0.7fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    border-radius: 8px;
+    box-shadow: 7px 7px 6px 0px rgba(35, 95, 108, 0.26);
+    background-color: #fff;
+    padding: 20px 20px;
+    margin-bottom: 25px;
+}
+
+.verticalLine {
+    border-left: 1px solid #5c6c75;
+    margin: 0px 0px 5px 0px;
+    border-radius: 8px;
+    opacity: 0.7;
+    height: 100px;
+}
+
+.cart_item_DIV {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 0.7fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    border-radius: 8px;
+    box-shadow: 7px 7px 6px 0px rgba(35, 95, 108, 0.26);
+    background-color: #fff;
+    padding: 20px 20px;
+    margin-bottom: 25px;
+    transition: box-shadow 0.5s;
+}
+
+.cart_item_DIV > a {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-decoration: none; /* No underlines on the link */
+    z-index: 10; /* Places the link above everything else in the div */
+    background-color: #FFF; /* Fix to make div clickable in IE */
+    opacity: 0; /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+}
+
+.cart_item_DIV:hover {
+    box-shadow: 10px 10px 5px 2px rgba(35, 95, 108, 0.26);
+}
+
+
+
+.cart_item_image {
+    grid-area: 1 / 1 / 3 / 2;
+    margin: auto;
+}
+.cart_item_image img {
+    width: 90px;
+    height: 90px;
+}
+
+.cart_item_title_desc {
+    grid-area: 1 / 2 / 2 / 3;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.cart_item_title_desc p {
+    margin: 0;
+
+}
+
+.cart_item_title_desc h2 {
+}
+
+.cart_item_price {
+    grid-area: 1 / 3 / 2 / 4;
+}
+
+.cart_item_price h3 {
+    text-align: center;
+}
+
+.cart_item_price p {
+    margin-top: auto;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 14px
+}

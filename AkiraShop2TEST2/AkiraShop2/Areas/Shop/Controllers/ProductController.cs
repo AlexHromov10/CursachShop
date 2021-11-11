@@ -38,6 +38,26 @@ namespace AkiraShop2.Areas.Shop.Controllers
             }
             item.DeSerializeItem();
 
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId != null)
+            {
+                if (item.Amount > 0)
+                {
+                    Order cart = await _context.Order.Include(f => f.OrderItems).FirstOrDefaultAsync(i => i.UserOrderId == userId && i.Status == "CART");
+                    if (cart.GetAmountInOrder(item.Id,"CART") >= item.Amount)
+                    {
+                        ViewBag.NotAvalible = item.Id;
+                    }
+                }
+
+                Order wishList = await _context.Order.Include(f => f.OrderItems).FirstOrDefaultAsync(i => i.UserOrderId == userId && i.Status == "WISH_LIST");
+                if (wishList.GetAmountInOrder(item.Id, "WISH_LIST") > 0)
+                {
+                    ViewBag.NotAvalibleWish = item.Id;
+                }
+            }
+
             return View(item);
         }
 
@@ -47,23 +67,27 @@ namespace AkiraShop2.Areas.Shop.Controllers
             var item1 = await _context.Item.FindAsync(ID);
             if (item1.Amount > 0)
             {
-                item1.DecreaseAmount();
-
-                Order order = await _context.Order.FirstOrDefaultAsync(i => i.UserOrderId == User.FindFirstValue(ClaimTypes.NameIdentifier) && i.Status == "CART");
-                if (order == null)
-                {
-                    return NotFound();
-                }
-
-                OrderItem orderItem = new OrderItem { OrderItem_ItemId = item1.Id, OrderItem_OrderId = order.Id };
-
-                _context.Add(orderItem);
-
-                await _context.SaveChangesAsync();
+                Order cart = await _context.Order.Include(f => f.OrderItems).FirstOrDefaultAsync(i => i.UserOrderId == User.FindFirstValue(ClaimTypes.NameIdentifier) && i.Status == "CART");
+                await cart.AddToCart(item1, _context);
 
             }
 
             return RedirectToAction(nameof(Index), new { id = ID});
         }
+
+        public async Task<IActionResult> AddToWish(int ID)
+        {
+            var item1 = await _context.Item.FindAsync(ID);
+            if (item1.Amount > 0)
+            {
+                Order cart = await _context.Order.Include(f => f.OrderItems).FirstOrDefaultAsync(i => i.UserOrderId == User.FindFirstValue(ClaimTypes.NameIdentifier) && i.Status == "WISH_LIST");
+                await cart.AddToWaitList(item1, _context);
+
+            }
+
+            return RedirectToAction(nameof(Index), new { id = ID });
+        }
+
+
     }
 }

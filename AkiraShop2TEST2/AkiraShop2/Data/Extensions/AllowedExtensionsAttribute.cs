@@ -34,7 +34,7 @@ namespace AkiraShop.Data.Extensions
 
         public string GetErrorMessage()
         {
-            return $"This photo extension is not allowed!";
+            return $"Этот формат изображения не доступен. Используйте JPG или PNG!";
         }
     }
 }

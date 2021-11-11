@@ -32,12 +32,14 @@ namespace AkiraShop2
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
-               // options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            // options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection")), 
+                    ServiceLifetime.Transient);
+                
             
             services.AddDatabaseDeveloperPageExceptionFilter();
 
