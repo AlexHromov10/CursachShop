@@ -1,0 +1,93 @@
+﻿@model IEnumerable<AkiraShop2.Entities.Order>
+
+@{
+    ViewData["Title"] = "Заказы. Пользоваетль -" + ViewBag.UserEmail;
+}
+
+<h1>Заказы. Пользоваетль - @ViewBag.UserEmail</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.items_with_amounts)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Key.Title)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Key.Description)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Key.Image)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Key.Price)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Value)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var _item in item.items_with_amounts.Keys)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => _item.Title)
+                                    </td>
+                                    <td>
+
+                                        @Html.DisplayFor(modelItem => _item.Description)
+                                    </td>
+                                    <td>
+                                        <img src="~/uploads/Item/@_item.Image" width="150" height="150" alt="Image not found ;(" />
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => _item.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.items_with_amounts[_item])
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+
+                <td>
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
