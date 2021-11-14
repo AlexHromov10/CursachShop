@@ -1,49 +1,93 @@
 ﻿@model AkiraShop2.Entities.Item
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробно товар: "+Model.Title;
 }
 
-<h1>Details</h1>
+<h1>Подробно товар: @Model.Title</h1>
+<p>
+    <a asp-controller="Item" asp-action="Index" asp-route-categoryId="@Model.CategoryId">Вернуться к товарам категории</a> |
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CharactObjectEXACT)
+            </th>
 
-<div>
-    <h4>Item</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Json_Characterisitcs_exact)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Json_Characterisitcs_exact)
-        </dd>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
 
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Title)
+            </td>
+            <td>
+
+                @Html.DisplayFor(modelItem => modelItem.Description)
+            </td>
+            <td>
+                <img src="~/uploads/Item/@Model.Image" width="150" height="150" alt="Image not found ;(" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Amount)
+            </td>
+
+
+            <td>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CharactObjectEXACT[0].charactItemName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CharactObjectEXACT[0].charactItemValue)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var _item in Model.CharactObjectEXACT)
+                        {
+                            <tr>
+                                <td>
+                                    @_item.charactItemName
+                                </td>
+                                <td>
+                                    @_item.charactItemValue
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@Model.Id">Изменить</a> |
+                <a asp-action="Delete" asp-route-id="@Model.Id">Удалить</a>
+            </td>
+        </tr>
+        
+    </tbody>
+</table>

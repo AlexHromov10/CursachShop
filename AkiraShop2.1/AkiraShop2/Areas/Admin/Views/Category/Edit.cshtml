@@ -8,7 +8,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-   
+
 
 
 
@@ -25,22 +25,13 @@
                 <textarea asp-for="Descriprions" class="form-control"></textarea>
                 <span asp-validation-for="Descriprions" class="text-danger"></span>
             </div>
-
-            <!--
-            <div class="row" style="width:100%;">
-                <div class="col">
-                    <input formnovalidate type="submit" value="Добавить хараткеристику" formaction="CharactEdit" formmethod="post" class="btn btn-outline-secondary" />
-                </div>
-                <hr class="solid">
-                <div class="col">
-                    <input formnovalidate type="submit" name="buttonid" value="Удалить последнюю добавленную характеристику" formaction="DelCharact" formmethod="post" class="btn btn-outline-secondary" />
-                </div>
+            <div class="form-group">
+                <input type="submit" asp-route-Charact_Add_Del="1" value="Добавить новую характеристику" class="btn btn-outline-secondary" />
+                <input type="submit" asp-route-Charact_Add_Del="-1" value="Удалить последнюю характеристику" class="btn btn-outline-secondary" />
             </div>
-            -->
-
             @for (int i = 0; i < Model.CharactObject.Count; i++)
             {
-                <div class="row" style="width:500px;">
+                <div class="row" id="DivId_charact(@i)" style="width:700px; border:1px solid;">
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="CharactObject[i].charactName" class="control-label"></label>
@@ -54,9 +45,12 @@
                             <span asp-validation-for="CharactObject[i].charactValues_Bool.isNumeric" class="text-danger"></span>
                         </div>
 
+                        <input type="submit" asp-route-CharactVal_AddId="@i" value="Добавить значение характеристики" class="btn btn-outline-secondary" />
+                        <input type="submit" asp-route-CharactVal_DelId="@i" value="Удалить последнее значение характеристики" class="btn btn-outline-secondary" />
+
                     </div>
 
-                    <div class="col">
+                    <div class="col" id="DivId_charactVal(@i)">
                         <div class="form-group">
                             @for (int j = 0; j < Model.CharactObject[i].charactValues_Bool.charactValues.Count; j++)
                             {
@@ -104,8 +98,9 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
-    function AbobaScritp(e) {
-        e.
-    }
-</script>
+        window.onload = function () {
+            document.getElementById('@ViewBag.JumpToDivId').scrollIntoView();
+        };
+</script>  

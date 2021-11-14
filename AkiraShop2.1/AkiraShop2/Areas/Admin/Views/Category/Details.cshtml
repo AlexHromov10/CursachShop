@@ -1,42 +1,102 @@
 ﻿@model AkiraShop2.Entities.Category
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробности категории: " + Model.Title;
 }
 
-<h1>Details</h1>
+<h1>Подробности категория: @Model.Title</h1>
 
-<div>
-    <h4>Category</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descriprions)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descriprions)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Json_Characterisitcs_model)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Json_Characterisitcs_model)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<p>
+    <a asp-action="Index">Вернуться к категорям</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descriprions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CharactObject)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Descriprions)
+            </td>
+            <td>
+                <img src="~/uploads/Category/@Model.Image" width="150" height="150" alt="Image not found ;(" />
+            </td>
+            <td>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CharactObject[0].charactName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CharactObject[0].charactValues_Bool.isNumeric)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CharactObject[0].charactValues_Bool.charactValues)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (int i = 0; i < Model.CharactObject.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.CharactObject[i].charactName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.CharactObject[i].charactValues_Bool.isNumeric)
+                                </td>
+                                <td>
+
+                                    @for (int j = 0; j < Model.CharactObject[i].charactValues_Bool.charactValues.Count; j++)
+                                    {
+                                        <table class="table">
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => modelItem.CharactObject[i].charactValues_Bool.charactValues[j])
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@Model.Id">Изменить</a> |
+                <!--<a asp-action="Details" asp-route-id="@Model.Id">Details</a> |-->
+                <a asp-action="Delete" asp-route-id="@Model.Id">Удалить</a>|
+                <a asp-area="Admin" asp-controller="Item" asp-action="Index" asp-route-categoryId="@Model.Id">Товары данной категории</a>
+            </td>
+        </tr>
+        
+    </tbody>
+</table>

@@ -13,12 +13,19 @@ namespace AkiraShop2.Data
     public class ApplicationUser:IdentityUser
     {
         [StringLength(250)]
+        [Display(Name = "Имя")]
         public string FirstName { get; set; }
+
         [StringLength(250)]
+        [Display(Name = "Фамилия")]
         public string LastName { get; set; }
+
         [StringLength(250)]
+        [Display(Name = "Адрес")]
         public string Address { get; set; }
+
         [StringLength(50)]
+        [Display(Name = "Индекс")]
         public string PostCode { get; set; }
 
 

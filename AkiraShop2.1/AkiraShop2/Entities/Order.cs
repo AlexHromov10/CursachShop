@@ -137,6 +137,26 @@ namespace AkiraShop2.Entities
             return notAvalibleItems;
         }
 
+        public async Task RemoveNotAvalibleItems(List<Item> notAvalibleItems,Order wait_list, ApplicationDbContext _context)
+        {
+            foreach (var NOitem in notAvalibleItems)
+            {
+                if (!wait_list.ItemsForOrder.Any(i => i == NOitem))
+                {
+                    _context.OrderItem.Add(new OrderItem { OrderItem_ItemId = NOitem.Id, OrderItem_OrderId = wait_list.Id, OrderItem_Amount = 1 });
+
+                    wait_list.ItemsForOrder.Add(NOitem);
+
+
+                }
+                this.ItemsForOrder.RemoveAll(i => i.Id == NOitem.Id);
+                OrderItem toRemove = await _context.OrderItem.FirstOrDefaultAsync(i => i.OrderItem_ItemId == NOitem.Id && i.OrderItem_OrderId == this.Id && i.OrderItem_Amount == this.items_with_amounts[NOitem]);
+                this.items_with_amounts.Remove(NOitem);
+                _context.OrderItem.Remove(toRemove);
+            }
+            await _context.SaveChangesAsync();
+        }
+
         public async Task order_Create(ApplicationDbContext _context)
         {
 

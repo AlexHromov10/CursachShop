@@ -32,7 +32,7 @@ namespace AkiraShop2.Areas.Admin.Controllers
         }
 
         // GET: Admin/Item
-        public async Task<IActionResult> Index(int categoryId, string categoryTitle)
+        public async Task<IActionResult> Index(int categoryId)
         {
             List<Item> list = await (from item in _context.Item
                                         where item.CategoryId == categoryId
@@ -56,8 +56,10 @@ namespace AkiraShop2.Areas.Admin.Controllers
             }
             
 
+
             ViewBag.CategoryId = categoryId;
-            ViewBag.CategoryTitle = categoryTitle;
+            Category cat = await _context.Category.FirstOrDefaultAsync(i => i.Id == categoryId);
+            ViewBag.CategoryTitle = cat.Title;
 
             return View(list); 
         }
@@ -76,7 +78,7 @@ namespace AkiraShop2.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
+            item.DeSerializeItem();
             return View(item);
         }
 

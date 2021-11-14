@@ -35,5 +35,12 @@ namespace AkiraShop2.Areas.Admin.Controllers
 
             return View(users);
         }
+
+        public async Task<IActionResult> Details(string userId)
+        {
+            ApplicationUser user = await _context.Users.FirstOrDefaultAsync(u=>u.Id == userId);
+
+            return View(user);
+        }
     }
 }

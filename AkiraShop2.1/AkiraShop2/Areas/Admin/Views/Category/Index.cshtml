@@ -16,14 +16,7 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descriprions)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Image)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.CharactObject)
             </th>
 
             <th></th>
@@ -35,65 +28,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.Descriprions)
-            </td>
-            <td>
-                <img src="~/uploads/Category/@item.Image" width="150" height="150" alt="Image not found ;(" />
-            </td>
-            <td>
-                <table class="table" >
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.CharactObject[0].charactName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.CharactObject[0].charactValues_Bool.isNumeric)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.CharactObject[0].charactValues_Bool.charactValues)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                          @for (int i = 0; i < item.CharactObject.Count; i++)
-                          {
-                        <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CharactObject[i].charactName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CharactObject[i].charactValues_Bool.isNumeric)
-                                </td>
-                                <td>
-
-                                    @for (int j = 0; j < item.CharactObject[i].charactValues_Bool.charactValues.Count; j++)
-                                    {
-                                        <table class="table">
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.CharactObject[i].charactValues_Bool.charactValues[j])
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    }
-
-                                </td>
-                        </tr>
-                          }
-                       
-                    </tbody>
-                </table>
-                       
-
+                <img src="~/uploads/Category/@item.Image" width="100" height="100" alt="Image not found ;(" />
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                <!--<a asp-action="Details" asp-route-id="@item.Id">Details</a> |-->
+                <a asp-action="Details" asp-route-id="@item.Id">Детали</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>|
-                <a asp-area="Admin" asp-controller="Item" asp-action="Index" asp-route-categoryId="@item.Id" asp-route-categoryTitle="@item.Title">Товары данной категории</a>
+                <a asp-area="Admin" asp-controller="Item" asp-action="Index" asp-route-categoryId="@item.Id">Товары данной категории</a>
             </td>
         </tr>
 }

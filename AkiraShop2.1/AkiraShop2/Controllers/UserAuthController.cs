@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using AkiraShop2.Entities;
+using System.Security.Claims;
 
 namespace AkiraShop2.Areas.Admin.Controllers
 {
@@ -135,8 +136,12 @@ namespace AkiraShop2.Areas.Admin.Controllers
 
 
 
-
-
+        [Authorize]
+        public async Task<IActionResult> ChangeProfile()
+        {
+            ApplicationUser applicationUser = await _context.Users.FirstOrDefaultAsync(u=>u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return View(applicationUser);
+        }
 
     }
 }

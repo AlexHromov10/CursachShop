@@ -13,11 +13,12 @@
             <a class="nav-link text-dark" asp-area="Shop" asp-controller="Orders" asp-action="Index">Заказы</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Здравствуйте @User.Identity.Name!</a>
+            <!--<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Здравствуйте, @SignInManager.UserManager.GetUserAsync(User).Result.FirstName!</a>-->
+            <a class="nav-link text-dark"  asp-controller="UserAuth" asp-action="ChangeProfile">Здравствуйте, @SignInManager.UserManager.GetUserAsync(User).Result.FirstName!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                <button type="submit" class="nav-link btn btn-link text-dark">Выйти</button>
             </form>
         </li>
     }

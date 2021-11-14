@@ -55,7 +55,7 @@ namespace AkiraShop2
             {
                 return NotFound();
             }
-
+            category.DeSerializeCategory();
             return View(category);
         }
 
@@ -200,16 +200,63 @@ namespace AkiraShop2
         [HttpPost]
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Descriprions,Image,ImageFile_EDIT,CharactObject")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Descriprions,Image,ImageFile_EDIT,CharactObject")] Category category, int? Charact_Add_Del, int? CharactVal_AddId, int? CharactVal_DelId)
         {
             if (id != category.Id)
             {
                 return NotFound();
             }
 
+            if (Charact_Add_Del == 1)
+            {
+                category.CharactObject.Add(new CategoryCharacteristics());
+
+                //return RedirectToAction(nameof(Create), category );
+                int jump_to = category.CharactObject.Count - 1;
+                ViewBag.JumpToDivId = "DivId_charact(" + jump_to + ")";
+                return View("Edit", category);
+            }
+            if (Charact_Add_Del == -1)
+            {
+                int last = category.CharactObject.Count - 1;
+                if (last > 0)
+                {
+                    category.CharactObject.RemoveAt(last);
+                }
+
+                int jump_to = category.CharactObject.Count - 1;
+                ViewBag.JumpToDivId = "DivId_charact(" + jump_to + ")";
+                return View("Edit", category);
+            }
+
+            if (CharactVal_AddId != null)
+            {
+
+                ViewBag.JumpToDivId = "DivId_charactVal(" + CharactVal_AddId.Value + ")";
+                category.CharactObject[CharactVal_AddId.Value].charactValues_Bool.charactValues.Add(string.Empty);
+
+                return View("Edit", category);
+            }
+            if (CharactVal_DelId != null)
+            {
+
+                int last = category.CharactObject[CharactVal_DelId.Value].charactValues_Bool.charactValues.Count - 1;
+                if (last > 0)
+                {
+                    category.CharactObject[CharactVal_DelId.Value].charactValues_Bool.charactValues.RemoveAt(last);
+                }
+                ViewBag.JumpToDivId = "DivId_charactVal(" + CharactVal_DelId.Value + ")";
+
+                return View("Edit", category);
+            }
+            
+
+
+
+
             //if (ModelState.IsValid)
             // {
-            
+
             if (category.CheckForNumeric())
             {
                 try
