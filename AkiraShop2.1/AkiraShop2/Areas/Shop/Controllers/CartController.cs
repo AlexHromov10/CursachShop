@@ -100,17 +100,38 @@ namespace AkiraShop2.Areas.Orders.Controllers
 
 
 
-        public async Task<IActionResult> CreateOrder(int? orderId)
+        public async Task<IActionResult> FormOrder(int? orderId)
         {
             if (orderId == null)
             {
                 return NotFound();
             }
-
             Order cart = await _context.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(i => i.Id == orderId);
-            await cart.order_Create(_context);
+            await cart.InitOrder(_context);
 
-            return RedirectToAction(nameof(Index));
+            ApplicationUser applicationUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            Dictionary<ApplicationUser, Order> result = new Dictionary<ApplicationUser, Order>();
+            result.Add(applicationUser, cart);
+
+            return View("ConfirmOrder",result);
         }
+
+        [HttpPost]
+        [ActionName("ConfirmOrder")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmOrder([Bind("Id", "AdditionalInfo","TotalPrice")] Order cart_notFull)
+        {
+            Order cart = await _context.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(i => i.Id == cart_notFull.Id);
+            if (cart == null)
+            {
+                return NotFound();
+            }
+            cart.AdditionalInfo = cart_notFull.AdditionalInfo;
+            cart.TotalPrice = cart_notFull.TotalPrice;
+            await cart.order_Create(_context);
+            return RedirectToAction("Index", "Orders");
+        }
+        
     }
 }

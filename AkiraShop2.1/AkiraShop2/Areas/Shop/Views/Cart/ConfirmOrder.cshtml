@@ -1,0 +1,83 @@
+﻿
+@model Dictionary<AkiraShop2.Data.ApplicationUser, AkiraShop2.Entities.Order>
+@{
+    ViewData["Title"] = "Оформление заказа";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-10 item_list justify-content-center">
+            <h2>Оформление заказа №@Model.Values.First().Id</h2>
+            <h3>Проверьте правильность выбранных товаров и их количество</h3>
+            @foreach (var item in Model.Values.First().items_with_amounts)
+            {
+                <div onclick="location.href = '/Shop/Product/@item.Key.Id';" style="cursor: pointer;">
+                    <div class="cart_item_DIV">
+                        <div class="cart_item_image">
+                            <img src="~/uploads/Item/@item.Key.Image" width="130" height="130" alt="Image not found ;(" />
+                        </div>
+                        <div class="cart_item_title_desc">
+                            <h2>@item.Key.Title</h2>
+                            <p>Количество: @item.Value</p>
+                        </div>
+                        <div class="cart_item_price">
+                            <h3>@item.Key.Price ₽</h3>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="item_DIV_error" style="margin-bottom: 20px">
+                <h3>Сумма заказа: @Model.Values.First().TotalPrice ₽</h3>
+            </div>
+
+            <div class="item_DIV_error" style="justify-content:center;margin-bottom: 20px">
+                <h3>Проверьте пользовательскую информацию</h3>
+                <div class="col" style="padding:0; margin:0">
+                    <div class="info_grid">
+                        <p>Имя:</p>
+                        <p style="font-weight: bold;">@Model.Keys.First().FirstName</p>
+                    </div>
+                    <hr class="solid" style="margin-top:5px;">
+                    <div class="info_grid">
+                        <p>Фамилия:</p>
+                        <p style="font-weight: bold;">@Model.Keys.First().LastName</p>
+                    </div>
+                    <hr class="solid" style="margin-top:5px;">
+                    <div class="info_grid">
+                        <p>Адрес:</p>
+                        <p style="font-weight: bold;">@Model.Keys.First().Address</p>
+                    </div>
+                    <hr class="solid" style="margin-top:5px;">
+                    <div class="info_grid">
+                        <p>Индекс:</p>
+                        <p style="font-weight: bold;">@Model.Keys.First().PostCode</p>
+                    </div>
+                    <hr class="solid" style="margin-top:5px;">
+                    <div class="info_grid">
+                        <p>Номер телефона:</p>
+                        <p style="font-weight: bold;">@Model.Keys.First().PhoneNumber</p>
+                    </div>
+                    <hr class="solid" style="margin-top:5px;">
+                    <div>
+                        @{ string returnUrl = Context.Request.Path + Context.Request.QueryString;}
+                        <a asp-area="" asp-controller="UserAuth" asp-action="ChangeProfile" asp-route-returnUrl="@returnUrl">Изменить информацию о пользователе</a>
+                    </div>
+                </div>
+            </div>
+            <form asp-action="ConfirmOrder">
+                <div class="item_DIV_error" style="margin-bottom:20px;">
+                    <h3>Дополнительная информация к заказу</h3>
+                    <input type="hidden" asp-for="Values.First().Id" />
+                    <input type="hidden" asp-for="Values.First().TotalPrice" />
+
+                    <input asp-for="Values.First().AdditionalInfo" class="form-control" placeholder="(необязательно)" />
+                </div>
+                <div class="item_DIV_error">
+                    <input type="submit" value="Оплатить заказ" class="btn buy_button" />
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

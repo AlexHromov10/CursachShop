@@ -1,98 +1,108 @@
-﻿@model IEnumerable<AkiraShop2.Entities.Order>
+﻿@model Dictionary<string, List<AkiraShop2.Entities.Order>>
 
 @{
     ViewData["Title"] = "Заказы";
 }
 
-<h1>Заказы</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.items_with_amounts)
-            </th>
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+<div class="row">
+    @foreach (var dictionary in Model)
+    {
+        @if (dictionary.Key == "formed")
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
+            <div class="col-8 item_list">
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
+                <h3>Оплаченные заказы:</h3>
 
-                <td>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Key.Title)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Key.Description)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Key.Image)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Key.Price)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => item.items_with_amounts.First().Value)
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var _item in item.items_with_amounts.Keys)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => _item.Title)
-                                    </td>
-                                    <td>
-
-                                        @Html.DisplayFor(modelItem => _item.Description)
-                                    </td>
-                                    <td>
-                                        <img src="~/uploads/Item/@_item.Image" width="150" height="150" alt="Image not found ;(" />
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => _item.Price)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.items_with_amounts[_item])
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </td>
-
-                <td>
-                    <!-- <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |-->
-                    <!--<a asp-action="Details" asp-route-id="@item.Id">Details</a> |-->
-                    @if (item.Status == "formed")
+                @if (dictionary.Value.Count != 0)
+                {
+                    @for (int i = 0; i < dictionary.Value.Count; i++)
                     {
-                        <a class="btn del_button" asp-action="DeleteOrder" asp-route-orderId="@item.Id">Удалить заказ</a>
-                    }
+                        <div class="item_DIV_error" style="text-align:start;margin-bottom: 20px;">
+                            <p><b>Заказ №@dictionary.Value[i].Id</b></p>
 
-                </td>
-            </tr>
+                            @foreach (var item in dictionary.Value[i].items_with_amounts)
+                            {
+                                <div onclick="location.href = '/Shop/Product/@item.Key.Id';" style="cursor: pointer;">
+                                    <div class="row" style="display:flex;">
+                                        <div class="col-7">
+                                            <p>@item.Key.Title</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <p>Количество: @item.Value</p>
+                                        </div>
+                                        <div class="col-2">
+                                            <p>@item.Key.Price ₽</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="solid" />
+                            }
+
+                            <div>
+                                <div class="row" style="display: flex;">
+                                    <div class="col-7">
+                                        <a class="btn buy_button" asp-area="Shop" asp-controller="Orders" asp-action="Details" asp-route-orderId="@dictionary.Value[i].Id">Подробнее о заказе</a>
+                                    </div>
+                                    <div class="col-3">
+                                        <p>Сумма заказа:</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <p><b>@dictionary.Value[i].TotalPrice ₽</b></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="item_DIV_error" style="margin-bottom: 20px;">
+                        <h4>Нет товаров в списке!</h4>
+                    </div>
+                }
+
+            </div>
         }
-    </tbody>
-</table>
+
+
+
+        @if (dictionary.Key == "delivered")
+        {
+            <div class="col-4 item_list">
+
+                <h3>Доставленные заказы:</h3>
+                @if (dictionary.Value.Count != 0)
+                {
+                    @for (int i = 0; i < dictionary.Value.Count; i++)
+                    {
+                        <div class="item_DIV_error" style="opacity: 0.5;text-align:start;margin-bottom: 20px;">
+                            <p><b>Заказ №@dictionary.Value[i].Id</b></p>
+                            <div class="row" style="display: flex;">
+                                <div class="col-6">
+                                    <p>Сумма заказа:</p>
+                                </div>
+                                <div class="col-6">
+                                    <p><b>@dictionary.Value[i].TotalPrice ₽</b></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a class="btn buy_button" asp-area="Shop" asp-controller="Orders" asp-action="Details" asp-route-orderId="@dictionary.Value[i].Id">Подробнее о заказе</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+
+                    <div class="item_DIV_error" style="margin-bottom: 20px;">
+                        <h4>Нет товаров в списке!</h4>
+                    </div>
+
+                }
+
+            </div>
+        }
+    }
+</div>

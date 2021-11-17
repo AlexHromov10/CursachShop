@@ -15,12 +15,12 @@ namespace AkiraShop2.Entities
 
         [Display(Name = "Название производителя: ")]
         [Required(ErrorMessage = "Введите название производителя!")]
-        [StringLength(200, MinimumLength = 2)]
+        [StringLength(200, MinimumLength = 1,ErrorMessage ="Некорректное количество символов")]
         public string Title { get; set; }
 
         [Display(Name = "Описание производителя: ")]
         [Required(ErrorMessage = "Введите описание производителя!")]
-        [StringLength(200, MinimumLength = 2)]
+        [StringLength(200, MinimumLength = 2, ErrorMessage = "Некорректное количество символов")]
         public string Descriprions { get; set; }
 
 

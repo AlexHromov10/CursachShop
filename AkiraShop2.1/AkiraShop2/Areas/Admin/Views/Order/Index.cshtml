@@ -77,13 +77,23 @@
                                 }
                             </tbody>
                         </table>
-                        <a class="btn del_button" asp-controller="Order" asp-action="Delete" asp-route-orderId_index="@dictionary.Value[i].Id">Удалить заказ</a>
+                        
                     }
                     else
                     {
 
                         <h4>Нет товаров в списке!</h4>
 
+                    }
+                    @if (dictionary.Key == "formed" || dictionary.Key == "delivered")
+                    {
+                        @if (dictionary.Value[i].AdditionalInfo != null)
+                        {
+                            <h4>Дополнительная информация:</h4>
+                            <hr class="soled" />
+                            <p>@dictionary.Value[i].AdditionalInfo</p>
+                        }
+                        <a class="btn del_button" asp-controller="Order" asp-action="Delete" asp-route-orderId_index="@dictionary.Value[i].Id">Удалить заказ</a>
                     }
                 </div>
             }

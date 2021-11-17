@@ -28,25 +28,43 @@ namespace AkiraShop2.Areas.Shop.Controllers
         //GET
         public async Task<IActionResult> Index()
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return NotFound();
+            }
 
-            List<Order> orders = await(from order in _context.Order
-                                       where order.UserOrderId == User.FindFirstValue(ClaimTypes.NameIdentifier) && order.Status != "CART" && order.Status != "WISH_LIST"
-                                       select new Order
-                                       {
-                                           Id = order.Id,
-                                           UserOrderId = order.UserOrderId,
-                                           Status = order.Status,
-                                           OrderItems = order.OrderItems
-                                       }).ToListAsync();
+            List<Order> formed_orders = await _context.Order.Include(o => o.OrderItems).Where(o => o.Status == "formed" && o.UserOrderId == userId).ToListAsync();
+            List<Order> delivered_orders = await _context.Order.Include(o => o.OrderItems).Where(o => o.Status == "delivered" && o.UserOrderId == userId).ToListAsync();
 
-            foreach (var order in orders)
+            foreach (var order in formed_orders)
+            {
+                await order.InitOrder(_context);
+            }
+            foreach (var order in delivered_orders)
             {
                 await order.InitOrder(_context);
             }
 
-            return View(orders);
+            Dictionary<string, List<Order>> result = new Dictionary<string, List<Order>>();
+            result.Add("formed",formed_orders);
+            result.Add("delivered", delivered_orders);
+
+            return View(result);
         }
 
+        public async Task<IActionResult> Details(int? orderId)
+        {
+            if (orderId == null)
+            {
+                return NotFound();
+            }
+            Order order = await _context.Order.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == orderId);
+            await order.InitOrder(_context);
+            return View(order);
+        }
+
+        /*
         public async Task<IActionResult> DeleteOrder(int? orderId)
         {
             if (orderId == null)
@@ -59,6 +77,6 @@ namespace AkiraShop2.Areas.Shop.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        */
     }
 }

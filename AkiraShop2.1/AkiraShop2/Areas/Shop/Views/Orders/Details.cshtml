@@ -1,0 +1,60 @@
+﻿@model AkiraShop2.Entities.Order
+@{
+    ViewData["Title"] = "Подробнее о заказе";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-10">
+            <h2>Заказ №@Model.Id</h2>
+        </div>
+
+        <div class="col-10 item_list justify-content-center">
+            <div class="item_DIV_error" style="margin-bottom: 20px">
+                <h2>Заказ №@Model.Id</h2>
+            </div>
+
+            @if (Model.Status == "formed")
+            {
+                <div class="item_DIV_error" style="margin-bottom: 20px; background-color: darkseagreen;">
+                    <h3>Статус заказа: Оплачен</h3>
+                </div>
+            }
+            else
+            {
+                <div class="item_DIV_error" style="margin-bottom: 20px; background-color: lightgrey">
+                    <h3>Статус заказа: Доставлен</h3>
+                </div>
+            }
+
+
+            @foreach (var item in Model.items_with_amounts)
+            {
+                <div onclick="location.href = '/Shop/Product/@item.Key.Id';" style="cursor: pointer;">
+                    <div class="cart_item_DIV">
+                        <div class="cart_item_image">
+                            <img src="~/uploads/Item/@item.Key.Image" width="130" height="130" alt="Image not found ;(" />
+                        </div>
+                        <div class="cart_item_title_desc">
+                            <h2>@item.Key.Title</h2>
+                            <p>Количество: @item.Value</p>
+                        </div>
+                        <div class="cart_item_price">
+                            <h3>@item.Key.Price ₽</h3>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="item_DIV_error" style="margin-bottom: 20px">
+                <h3>Сумма заказа:<b>@Model.TotalPrice ₽</b></h3>
+            </div>
+
+            <div class="item_DIV_error" style="margin-bottom: 20px">
+                <h3>Дополнительная информация:</h3>
+                <hr class="solid"/>
+                <p>@Model.AdditionalInfo</p>
+            </div>
+        </div>
+    </div>
+</div>

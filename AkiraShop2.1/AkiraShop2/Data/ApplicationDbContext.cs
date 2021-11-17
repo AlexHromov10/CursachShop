@@ -25,13 +25,20 @@ namespace AkiraShop2.Data
         public string Address { get; set; }
 
         [StringLength(50)]
+        [RegularExpression(@"^[0-9]{6}", ErrorMessage ="Некорректный индекс")]
         [Display(Name = "Индекс")]
         public string PostCode { get; set; }
+
+        [RegularExpression(@"((8|\+7)-?)?\(?\d{3,5}\)?-?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}((-?\d{1})?-?\d{1})?", ErrorMessage = "Некорректный номер телефона")]
+        public override string PhoneNumber { get; set; }
 
 
 
         [ForeignKey("UserOrderId")]
         public virtual ICollection<Order> Orders { get; set; }
+
+
+
     }
 
 
@@ -43,14 +50,13 @@ namespace AkiraShop2.Data
 
         }
 
+        
+
+
         public DbSet<Category> Category { get; set; }
         public DbSet<Item> Item { get; set; }
         public DbSet<Manufacturer> Manufacturer  { get;set;}
         public DbSet<Order> Order { get; set; }
-
-
-
-
         public DbSet<OrderItem> OrderItem { get; set; }
     }
 }

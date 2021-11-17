@@ -14,11 +14,12 @@ namespace AkiraShop2.Entities.HelperEntities
         {
             charactValues = new List<string>();
 
-            filter = new Filter();
-            filter.exactValue = new List<bool>();
+            //filter = new Filter();
+            //filter.exactValue = new List<bool>();
 
             charactValues.Add(string.Empty);
         }
+        /*
         public void AddFilter(int count)
         {
             for (int i = 0; i < count; i++)
@@ -26,7 +27,7 @@ namespace AkiraShop2.Entities.HelperEntities
                 filter.exactValue.Add(false);
             }
         }
-
+        */
         [JsonProperty]
         [Required(ErrorMessage = "Введите значения характеристики!")]
         [Display(Name = "Значения характеристики: ")]
@@ -37,8 +38,8 @@ namespace AkiraShop2.Entities.HelperEntities
         [Display(Name = "Числовые значения или нет")]
         public bool isNumeric { get; set; }
 
-        [NotMapped]
-        public Filter filter { get; set; }
+        //[NotMapped]
+        //public Filter filter { get; set; }
 
         
     }

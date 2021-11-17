@@ -11,15 +11,18 @@
     <li class="nav-item dropdown show">
         <a class="brn dropdown-toggle nav-link" href="#" data-toggle="dropdown"> Администрирование </a>
         <div class="dropdown-menu">
-
+            <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="FormedOrders">Оплаченные заказы</a>
             <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Пользователи</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Категории</a>
             <a class="dropdown-item" asp-area="Admin" asp-controller="Manufacturer" asp-action="Index">Производители</a>
-
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" asp-area="Admin" asp-controller="Search" asp-action="Index">Поиск</a>
         </div>
     </li>
+    /*
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Order" asp-action="FormedOrders">Оплаченные заказы</a>
+
     </li>
+    */
 }

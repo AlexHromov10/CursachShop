@@ -137,10 +137,45 @@ namespace AkiraShop2.Areas.Admin.Controllers
 
 
         [Authorize]
-        public async Task<IActionResult> ChangeProfile()
+        public async Task<IActionResult> ChangeProfile(string? returnUrl)
         {
+            ViewBag.returnUrl = returnUrl;
             ApplicationUser applicationUser = await _context.Users.FirstOrDefaultAsync(u=>u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
             return View(applicationUser);
+        }
+
+        [HttpPost]
+        [ActionName("EditPersonalInformation")]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> EditPersonalInformation(ApplicationUser applicationUser, string? returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser this_user = await _context.Users.FirstOrDefaultAsync(u=>u.Id == applicationUser.Id);
+
+                this_user.FirstName = applicationUser.FirstName;
+                this_user.LastName = applicationUser.LastName;
+                this_user.Address = applicationUser.Address;
+                this_user.PostCode = applicationUser.PostCode;
+                this_user.PhoneNumber = applicationUser.PhoneNumber;
+
+
+                _context.Update(this_user);
+                await _context.SaveChangesAsync();
+                ViewBag.ChangesSaved = 1;
+                if (returnUrl != null)
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return View("ChangeProfile", this_user);
+                }
+                
+            }
+            ViewBag.ChangesSaved = 0;
+            return View("ChangeProfile", applicationUser);
         }
 
     }

@@ -57,6 +57,11 @@ namespace AkiraShop2.Entities
 
             for (int i = 0; i < CharactObject.Count; i++)
             {
+                if (CharactObject[i].charactValues_Bool.isNumeric == true)
+                {
+                    List<string> forSort = new List<string>(CharactObject[i].charactValues_Bool.charactValues.OrderBy(x => double.Parse(x)));
+                    CharactObject[i].charactValues_Bool.charactValues = forSort;
+                }
                 keyValuePairs.Add(CharactObject[i].charactName, CharactObject[i].charactValues_Bool);
             }
 
@@ -93,25 +98,26 @@ namespace AkiraShop2.Entities
             }
         }
 
-        public bool CheckForNumeric()
+        public List<int> CheckForNumeric()
         {
-            foreach (var charobj in CharactObject)
+            List<int> errorIds = new List<int>();
+            for (int i = 0; i < CharactObject.Count; i++)
             {
-                if (charobj.charactValues_Bool.isNumeric == true)
+                if (CharactObject[i].charactValues_Bool.isNumeric == true)
                 {
-                    foreach (var val in charobj.charactValues_Bool.charactValues)
+                    foreach (var charact in CharactObject[i].charactValues_Bool.charactValues)
                     {
                         double n;
-                        bool isNumeric = double.TryParse(val, out n);
+                        bool isNumeric = double.TryParse(charact, out n);
                         if (!isNumeric)
                         {
-                            return false;
+                            errorIds.Add(i);
+                            break;
                         }
                     }
-
                 }
             }
-            return true;
+            return errorIds;
         }
 
         //Главные поля сущности Category://
@@ -119,10 +125,10 @@ namespace AkiraShop2.Entities
         
         [Display(Name = "Название категории: ")]
         [Required(ErrorMessage = "Введите название категории!")]
-        [StringLength(200, MinimumLength = 2)]
+        [StringLength(200, MinimumLength = 2, ErrorMessage = "Некорректное количество символов")]
         public string Title { get; set; }
 
-        [StringLength(200, MinimumLength = 2)]
+        [StringLength(200, MinimumLength = 2, ErrorMessage = "Некорректное количество символов")]
         [Display(Name = "Описание категории: ")]
         [Required(ErrorMessage = "Введите описание категории!")]
         public string Descriprions { get; set; }

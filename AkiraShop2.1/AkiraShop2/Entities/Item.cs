@@ -131,12 +131,12 @@ namespace AkiraShop2.Entities
 
         [Display(Name = "Название товара: ")]
         [Required(ErrorMessage = "Введите название товара!")]
-        [StringLength(200, MinimumLength = 2)]
+        [StringLength(200, MinimumLength = 2, ErrorMessage = "Некорректное количество символов")]
         public string Title{ get; set; }
 
         [Display(Name = "Описание товара: ")]
         [Required(ErrorMessage = "Введите описание товара!")]
-        [StringLength(1000)]
+        [StringLength(1000, ErrorMessage = "Некорректное количество символов")]
         public string Description { get; set; }
 
         [Display(Name = "Изображение: ")]
@@ -144,7 +144,7 @@ namespace AkiraShop2.Entities
 
         [Display(Name = "Цена товара: ")]
         [Required(ErrorMessage = "Введите цену товара!")]
-        [Range(0, 1000000)]
+        [Range(0, uint.MaxValue, ErrorMessage = "Некорректная цена")]
         public uint Price { get; set; }
 
         public string Json_Characterisitcs_exact { get; set; }
@@ -159,7 +159,7 @@ namespace AkiraShop2.Entities
 
         [Display(Name = "Количество товара: ")]
         [Required(ErrorMessage = "Введите количество!")]
-        [Range(0, 1000000)]
+        [Range(0, uint.MaxValue, ErrorMessage = "Некорректное количество")]
         public uint Amount { get; set; }
 
         [ForeignKey("OrderItem_ItemId")]

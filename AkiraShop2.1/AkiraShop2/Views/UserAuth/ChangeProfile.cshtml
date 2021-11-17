@@ -7,8 +7,14 @@
 <h3>Изменить информацию о пользователе</h3>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col-6">
+        @if (ViewBag.ChangesSaved == 1)
+        {
+            <div style="display:block; padding: 20px 20px; background-color:lightgreen; border-radius: 8px">
+                <h4>Изменения успешно сохранены!</h4>
+            </div>
+        }
+        <form asp-action="EditPersonalInformation">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -36,10 +42,9 @@
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label class="control-label">E-mail адрес</label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <button action="EditPersonalInformation" class="btn buy_button" type="submit" name="returnUrl" value="@ViewBag.returnUrl">Сохранить</button>
             </div>
         </form>
     </div>

@@ -13,6 +13,7 @@ namespace AkiraShop2.Entities
     {
         public Order()
         {
+            TotalPrice = 0;
             ItemsForOrder = new List<Item>();
             items_with_amounts = new Dictionary<Item, int>();
         }
@@ -21,7 +22,11 @@ namespace AkiraShop2.Entities
         {
             if (this.OrderItems != null)
             {
-
+                bool check = false;
+                if (this.TotalPrice == 0)
+                {
+                    check = true;
+                }
                 foreach (var orderItem in this.OrderItems)
                 {
                     Item item = await _context.Item.FirstOrDefaultAsync(i => i.Id == orderItem.OrderItem_ItemId);
@@ -29,6 +34,13 @@ namespace AkiraShop2.Entities
                     {
                         this.ItemsForOrder.Add(item);
                         this.items_with_amounts.Add(item, orderItem.OrderItem_Amount);
+                        if (check)
+                        {
+                            this.TotalPrice += item.Price * (uint)orderItem.OrderItem_Amount;
+                        }
+                        
+                        
+                        
                     }
 
                 }
@@ -178,16 +190,38 @@ namespace AkiraShop2.Entities
             await _context.SaveChangesAsync();
         }
 
+
+
+
+
+
+
+
+
+
+
         public int Id { get; set; }
 
         [Required]
         public string UserOrderId { get; set; }
 
         [Required]
+        [StringLength(20)]
         public string Status { get; set; }
 
         [ForeignKey("OrderItem_OrderId")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+
+        [Display(Name = "Сумма")]
+        public uint TotalPrice { get; set; }
+
+        [Display(Name = "Дополнительная информация")]
+        [StringLength(1000)]
+        public string AdditionalInfo { get; set; }
+
+
+
+
 
 
 

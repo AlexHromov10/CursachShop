@@ -29,26 +29,27 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var user in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => user.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @Html.DisplayFor(modelItem => user.FirstName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
+                    @Html.DisplayFor(modelItem => user.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Address)
+                    @Html.DisplayFor(modelItem => user.Address)
                 </td>
                 <td>
-                    <!-- <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |-->
-                    <!--<a asp-action="Details" asp-route-id="@item.Id">Details</a> |-->
-                    <!--<a asp-action="Delete" asp-route-id="@item.Id">Удалить</a> |-->
-                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-userId="@item.Id" asp-route-categoryTitle="@item.Email">Заказы данного пользователя</a>
+                    <!-- <a asp-action="Edit" asp-route-id="@user.Id">Изменить</a> |-->
+                    <!--<a asp-action="Details" asp-route-id="@user.Id">Details</a> |-->
+                    <!--<a asp-action="Delete" asp-route-id="@user.Id">Удалить</a> |-->
+                    <a asp-controller="User" asp-action="Details" asp-route-userId="@user.Id">Подробнее о пользователе</a> |
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-userId="@user.Id">Заказы данного пользователя</a>
                 </td>
             </tr>
         }

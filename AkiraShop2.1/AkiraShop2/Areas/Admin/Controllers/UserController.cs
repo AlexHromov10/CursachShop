@@ -39,6 +39,10 @@ namespace AkiraShop2.Areas.Admin.Controllers
         public async Task<IActionResult> Details(string userId)
         {
             ApplicationUser user = await _context.Users.FirstOrDefaultAsync(u=>u.Id == userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
             return View(user);
         }

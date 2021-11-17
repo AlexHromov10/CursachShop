@@ -1,0 +1,140 @@
+﻿@model AkiraShop2.Areas.Admin.Models.SearchModel
+@{
+    ViewData["Title"] = "Поиск по конкретным значениям";
+}
+
+
+
+<div class="row justify-content-center">
+    <div class="item_DIV_error col-8" style="margin: 0px 0px 20px 0px">
+        <h1>Поиск по конкретным значениям</h1>
+    </div>
+
+
+    <div class="item_DIV_error col-8" style="margin-bottom: 20px">
+        <h3 style="margin-bottom: 10px">Заказ</h3>
+        <form asp-action="Search">
+            <div class="row " style="margin: 0px 0px 10px 0px; text-align: start">
+                <div class="col-2">
+                    <label class="control-label">ID:</label>
+                </div>
+                <div class="col-8 justify-content-start">
+                    <input asp-for="orderId" class="form-control" />
+                    <span asp-validation-for="orderId" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button value="Order_id" class="btn buy_button" style="height: 40px" type="submit" name="action">Поиск </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+    <div class="item_DIV_error col-8" style="margin-bottom: 20px">
+        <h3 style="margin-bottom: 10px">Пользователь</h3>
+        <form asp-action="Search">
+            <div class="row" style="margin: 0px 0px 10px 0px; text-align:start">
+                <div class="col-2">
+                    <label class="control-label">Электронная почта:</label>
+                </div>
+                <div class="col-8 justify-content-start">
+                    <input asp-for="userEmail" class="form-control" />
+                    <span asp-validation-for="userEmail" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button value="User_email" class="btn buy_button" style="height: 40px" type="submit" name="action">Поиск </button>
+                </div>
+            </div>
+        </form>
+        <form asp-action="Search">
+            <div class="row" style="margin: 0px 0px 10px 0px; text-align:start">
+                <div class="col-2">
+                    <label class="control-label">Номер телефона:</label>
+                </div>
+                <div class="col-8 justify-content-start">
+                    <input asp-for="userNumber" class="form-control" />
+                    <span asp-validation-for="userNumber" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button value="User_number" class="btn buy_button" style="height: 40px" type="submit" name="action">Поиск </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+
+    <div class="item_DIV_error col-8" style="margin-bottom: 20px">
+        <h3 style="margin-bottom: 10px">Категория</h3>
+        <form asp-action="Search">
+            <div class="row " style="margin: 0px 0px 10px 0px; text-align: start">
+                <div class="col-2">
+                    <label class="control-label">ID:</label>
+                </div>
+                <div class="col-8 justify-content-start">
+                    <input asp-for="categoryId" class="form-control" />
+                    <span asp-validation-for="categoryId" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button value="Category_id" class="btn buy_button" style="height: 40px" type="submit" name="action">Поиск </button>
+                </div>
+            </div>
+        </form>
+
+        <form asp-action="Search">
+            <div class="row" style="margin: 0px 0px 10px 0px; text-align:start">
+                <div class="col-2">
+                    <label class="control-label">Название:</label>
+                </div>
+                <div class="col-8 justify-content-start">
+                    <input asp-for="categoryTitle" class="form-control" />
+                    <span asp-validation-for="categoryTitle" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button value="Category_title" class="btn buy_button" style="height: 40px" type="submit" name="action">Поиск </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+
+    <div class="item_DIV_error col-8" style="margin-bottom: 20px">
+        <h3 style="margin-bottom: 10px">Товар</h3>
+        <form asp-action="Search">
+            <div class="row " style="margin: 0px 0px 10px 0px; text-align: start">
+                <div class="col-2">
+                    <label class="control-label">ID:</label>
+                </div>
+                <div class="col-8 justify-content-start">
+                    <input asp-for="itemId" class="form-control" />
+                    <span asp-validation-for="itemId" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button value="Item_id" class="btn buy_button" style="height: 40px" type="submit" name="action">Поиск </button>
+                </div>
+            </div>
+        </form>
+
+        <form asp-action="Search">
+            <div class="row" style="margin: 0px 0px 10px 0px; text-align:start">
+                <div class="col-2">
+                    <label class="control-label">Название:</label>
+                </div>
+                <div class="col-8 justify-content-start">
+                    <input asp-for="itemTitle" class="form-control" />
+                    <span asp-validation-for="itemTitle" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button value="Item_title" class="btn buy_button" style="height: 40px" type="submit" name="action">Поиск </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+</div>

@@ -74,7 +74,9 @@ namespace AkiraShop2
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Descriprions,ImageFile,CharactObject")] Category category)
         {
-            if (category.CheckForNumeric())
+            List<int> errorIds = new List<int>();
+            errorIds = category.CheckForNumeric();
+            if (errorIds.Count == 0)
             {
                 if (ModelState.IsValid)
                 {
@@ -88,6 +90,14 @@ namespace AkiraShop2
                     }
 
                 }
+            }
+            else
+            {
+                foreach (var id in errorIds)
+                {
+                    ModelState.AddModelError("CharactObject["+id+"].charactName", "В числовой характеристики присутсвуют буквы!");
+                }
+                ViewBag.JumpToDivId = category.CharactObject[errorIds.First()].charactName;
             }
             return View(category);
 
@@ -249,7 +259,7 @@ namespace AkiraShop2
 
                 return View("Edit", category);
             }
-            
+
 
 
 
@@ -257,7 +267,9 @@ namespace AkiraShop2
             //if (ModelState.IsValid)
             // {
 
-            if (category.CheckForNumeric())
+            List<int> errorIds = new List<int>();
+            errorIds = category.CheckForNumeric();
+            if (errorIds.Count == 0)
             {
                 try
                 {
@@ -295,27 +307,16 @@ namespace AkiraShop2
                 }
                 return RedirectToAction(nameof(Index));
             }
-          //  }
-           return View(category);
-        }
-
-
-        //НЕ РАБОТАЕТ НЕ РАБОТАЕТ НЕ РАБОТАЕТ НЕ РАБОТАЕТ НЕ РАБОТАЕТ НЕ РАБОТАЕТ//
-        [HttpPost]
-        [ActionName("CharactEdit")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CharactEdit(int id, [Bind("Id,Title,Descriprions,Image,ImageFile_EDIT,CharactObject")] Category category)
-        {
-            if (id != category.Id)
+            else
             {
-                return NotFound();
+                foreach (var idd in errorIds)
+                {
+                    ModelState.AddModelError("CharactObject[" + id + "].charactName", "В числовой характеристики присутсвуют буквы!");
+                }
+                ViewBag.JumpToDivId = category.CharactObject[errorIds.First()].charactName;
             }
-
-            await _context.SaveChangesAsync();
-            return Ok("asfasf");
+            return View(category);
         }
-        //////////////////////////////////////////////////////////////////////////
-
 
         // GET: Category/Delete/5
         public async Task<IActionResult> Delete(int? id)

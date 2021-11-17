@@ -2412,3 +2412,7 @@ C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Debug
 C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Debug\net5.0\Razor\Areas\Identity\Pages\Account\Manage\_ManageNav.cshtml.g.cs
 C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Debug\net5.0\Razor\Areas\Identity\Pages\Account\Manage\_ViewImports.cshtml.g.cs
 C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Debug\net5.0\Razor\Views\UserAuth\ChangeProfile.cshtml.g.cs
+C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Debug\net5.0\Razor\Areas\Shop\Views\Cart\ConfirmOrder.cshtml.g.cs
+C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Debug\net5.0\Razor\Areas\Shop\Views\Orders\Details.cshtml.g.cs
+C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Debug\net5.0\Razor\Areas\Admin\Views\Search\Index.cshtml.g.cs
+C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Debug\net5.0\Razor\Areas\Admin\Views\Order\Details.cshtml.g.cs

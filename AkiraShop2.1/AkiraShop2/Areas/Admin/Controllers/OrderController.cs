@@ -73,6 +73,30 @@ namespace AkiraShop2.Areas.Admin.Controllers
             return View(result);
         }
 
+        public async Task<IActionResult> Details(int? orderId)
+        {
+            if (orderId == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Order.Include(o=>o.OrderItems).FirstOrDefaultAsync(o=>o.Id == orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            await order.InitOrder(_context);
+
+            var user = await _context.Users.FirstOrDefaultAsync(u=>u.Id == order.UserOrderId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            KeyValuePair<ApplicationUser, Order> result = new KeyValuePair<ApplicationUser, Order>(user,order);
+            return View("Details",result);
+        }
+
         public async Task<IActionResult> Delete(int? orderId_index, int? orderId_formed)
         {
             int? orderId = null;
