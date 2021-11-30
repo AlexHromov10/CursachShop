@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Этот файл используется процессом публикации или упаковки вашего веб-проекта. Можно настроить поведение этого процесса,
+изменив этот файл MSBuild. Подробности см. на странице https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA4tPbNQc5AUyIyBSju9UdnQAAAAACAAAAAAAQZgAAAAEAACAAAACfiTMZoviggl342hwVVcKe7TC72NGbQOwW1RwO+6h6ngAAAAAOgAAAAAIAACAAAACH/lHUMVwTgnrCG8xpCdDDMx6GDHM0lQUMGXBQN9zHEIAAAABZHK5j4UOVGZfo61GKyK7VNu9ITBlxNPmJHolJ/utF0CW2W5IqyhM+fqbwOOEdcGk0BMKxa/JsK5wLrPMkiNl36EXCQ24JlmIGQqyHqLMmDWjQOa3M9jUofdSdcDvC5KtSHYFr9dNnfdRYr681MNousLWPtjyYSTNNPOTCji0hA0AAAABeX74C3sp/z4wzhZ8HfvseFVuibGlNaH1jNmVspNoTRCCON5T9uVTedEl5dMPefhYDX7DD1fZHz6PPz/67pPxS</EncryptedPassword>
+    <History>True|2021-11-30T01:01:15.0686751Z;True|2021-11-30T03:54:10.0456472+03:00;True|2021-11-30T03:45:51.9120431+03:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <EFMigrations Include="AkiraShop2.Data.ApplicationDbContext">
+      <Value>Data Source=tcp:akirashop2dbserver.database.windows.net,1433%3bInitial Catalog=AkiraShop2_db%3bUser Id=Alex_Hromov%40akirashop2dbserver%3bPassword=!1DfSaeasfd1!</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

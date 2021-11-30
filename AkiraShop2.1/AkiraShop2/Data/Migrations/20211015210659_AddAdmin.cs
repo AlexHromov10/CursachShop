@@ -37,6 +37,8 @@ namespace AkiraShop2.Data.Migrations
             migrationBuilder.Sql($"INSERT INTO AspNetRoles (Id, Name, NormalizedName) VALUES ('{ADMIN_ROLE_GUID}','Admin','ADMIN')");
 
             migrationBuilder.Sql($"INSERT INTO AspNetUserRoles (UserId, RoleId) VALUES ('{ADMIN_USER_GUID}','{ADMIN_ROLE_GUID}')");
+
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

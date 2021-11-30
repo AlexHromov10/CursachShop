@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="AkiraShop" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Alexandr\\Documents\\GitHub\\CursachShop\\AkiraShop2\.1\\AkiraShop2\\obj\\Release\\net5\.0\\PubTmp\\Out\\$" />
+  </parameter>
+  <parameter name="AkiraShop2.Data.ApplicationDbContext" description="" value="Data Source=tcp:akirashop2dbserver.database.windows.net,1433;Initial Catalog=AkiraShop2_db;User Id=Alex_Hromov@akirashop2dbserver;Password=!1DfSaeasfd1!" tags="dbfullsql">
+    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^C:\\Users\\Alexandr\\Documents\\GitHub\\CursachShop\\AkiraShop2\.1\\AkiraShop2\\obj\\Release\\net5\.0\\PubTmp\\EFSQLScripts\\AkiraShop2\.Data\.ApplicationDbContext\.sql$" />
+  </parameter>
+</parameters>

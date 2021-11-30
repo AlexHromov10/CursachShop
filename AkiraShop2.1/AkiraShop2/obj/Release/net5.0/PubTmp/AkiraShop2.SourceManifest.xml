@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Release\net5.0\PubTmp\Out\" />
+  <dbfullsql path="C:\Users\Alexandr\Documents\GitHub\CursachShop\AkiraShop2.1\AkiraShop2\obj\Release\net5.0\PubTmp\EFSQLScripts\AkiraShop2.Data.ApplicationDbContext.sql" />
+</sitemanifest>
