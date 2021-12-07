@@ -48,9 +48,9 @@
                                     <span asp-validation-for="CharactObject[i].charactValues_Bool.isNumeric" class="text-danger"></span>
                                 </div>
 
-                                <input formnovalidate type="submit" name="AddCharactValueID" value="Добавить значение характеристики (@i)" formaction="AddCharactValue" formmethod="post" class="btn btn-outline-secondary" />
+                                <input formnovalidate type="submit" asp-action="AddCharactValue" asp-route-CharactId="@i" value="Добавить значение характеристики" class="btn btn-outline-secondary" />
 
-                                <input formnovalidate type="submit" name="DelCharactValueID" value="Удалить последнее значение характеристики (@i)" formaction="DelCharactValue" formmethod="post" class="btn btn-outline-secondary" />
+                                <input formnovalidate type="submit" asp-action="DelCharactValue" asp-route-CharactId="@i" value="Удалить последнее значение характеристики" class="btn btn-outline-secondary" />
                             </div>
                         </div>
 
@@ -71,7 +71,7 @@
                     </div>
                 }
             </div>
-            <h5>Загружать картинку после заполения характеристик!!!!</h5>
+            <p>Рекомендуется загружать изображение после заполения характеристик!</p>
             <div class="form-group">
                 <label asp-for="ImageFile"></label>
                 <input type="file" asp-for="ImageFile" class="form-control" />

@@ -189,12 +189,12 @@ namespace AkiraShop2.Entities
         [NotMapped]
         [AllowedExtensions(new string[] { ".jpg", ".png" })]
         [Required(ErrorMessage = "Загрузите корректный файл!")]
-        [Display(Name = "Картинка товара: ")]
+        [Display(Name = "Изображение товара: ")]
         public IFormFile ImageFile { set; get; }
 
         [NotMapped]
         [AllowedExtensions(new string[] { ".jpg", ".png" })]
-        [Display(Name = "Картинка товара: ")]
+        [Display(Name = "Изображение товара: ")]
         public IFormFile ImageFile_EDIT { set; get; }
     }
 }

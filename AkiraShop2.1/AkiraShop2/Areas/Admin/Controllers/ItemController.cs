@@ -189,7 +189,8 @@ namespace AkiraShop2.Areas.Admin.Controllers
                 {
                     if (item.ImageFile_EDIT != null)
                     {
-                        if (Path.GetExtension(item.ImageFile_EDIT.FileName) == ".png" || Path.GetExtension(item.ImageFile_EDIT.FileName) == ".jpg")
+                        string extension = Path.GetExtension(item.ImageFile_EDIT.FileName);
+                        if (extension == ".png" || extension == ".PNG" || extension == ".jpg" || extension == ".JPG")
                         {
                             var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads/Item");
                             var filePath = Path.Combine(uploads, item.Image);

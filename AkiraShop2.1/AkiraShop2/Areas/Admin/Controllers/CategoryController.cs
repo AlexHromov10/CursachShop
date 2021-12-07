@@ -147,12 +147,12 @@ namespace AkiraShop2
         [HttpPost]
         [ActionName("AddCharactValue")]
         [ValidateAntiForgeryToken]
-        public IActionResult AddCharactValue(Category category, string AddCharactValueID)
+        public IActionResult AddCharactValue(Category category, string CharactId)
         {
-            int ids = Int32.Parse(AddCharactValueID.Substring(34, 1));
-
+            //int ids = Int32.Parse(AddCharactValueID.Substring(34, 1));
+            int ids = Int32.Parse(CharactId);
             ViewBag.JumpToDivId = "DivId_charactVal(" + ids+")";
-           category.CharactObject[ids].charactValues_Bool.charactValues.Add(string.Empty);
+            category.CharactObject[ids].charactValues_Bool.charactValues.Add(string.Empty);
 
             return View("Create", new Category
             {
@@ -164,10 +164,10 @@ namespace AkiraShop2
         [HttpPost]
         [ActionName("DelCharactValue")]
         [ValidateAntiForgeryToken]
-        public IActionResult DelCharactValue(Category category, string DelCharactValueID)
+        public IActionResult DelCharactValue(Category category, string CharactId)
         {
-            int ids = Int32.Parse(DelCharactValueID.Substring(33, 1));
-
+            //int ids = Int32.Parse(DelCharactValueID.Substring(33, 1));
+            int ids = Int32.Parse(CharactId);
             int last = category.CharactObject[ids].charactValues_Bool.charactValues.Count - 1;
             if (last > 0)
             {
@@ -275,9 +275,9 @@ namespace AkiraShop2
                 {
                     if (category.ImageFile_EDIT != null)
                     {
-                        if (Path.GetExtension(category.ImageFile_EDIT.FileName) == ".png" || Path.GetExtension(category.ImageFile_EDIT.FileName) == ".jpg")
-                        {
-                            //var buff = Path.GetExtension(category.ImageFile_EDIT.FileName);
+                        string extension = Path.GetExtension(category.ImageFile_EDIT.FileName);
+                        if (extension == ".png" || extension == ".PNG" || extension == ".jpg" || extension == ".JPG")
+                        { 
                             category.DeleteImage(_hostingEnvironment);
                             category.WriteContentCategory(_hostingEnvironment, category.ImageFile_EDIT);
                         }
